@@ -22,6 +22,7 @@ class Endpoints {
     //CLIENTS
     CREATE_CLIENT: this.joinPaths(this.CLIENT, "create"),
     EDIT_CLIENT: this.joinPaths(this.CLIENT, "edit"),
+    DELETE_CLIENT: this.joinPaths(this.CLIENT, "delete"),
     FIND_CLIENT: this.joinPaths(this.CLIENT, "find"),
     FIND_ALL_CLIENT: this.joinPaths(this.CLIENT, "findAll"),
 
