@@ -62,7 +62,7 @@ function View() {
     const api = API.ENDPOINTS.FIND_ALL_USER;
     try {
       const result = await apiService.getApi(api);
-      const data = result.data;
+      const data = result.data.data;
       setUsers(
         data.filter((X: any) => {
           return X.department != "AD";
@@ -138,6 +138,12 @@ function View() {
         </Formik>
       </div>
       <ul className="flex flex-col mt-4">
+        {!users ||
+          (users.length == 0 && (
+            <div className="w-full justify-center items-center text-center">
+              <h1>No data found for Users</h1>
+            </div>
+          ))}
         {users?.map((value: ITypeUser, index: number) => {
           return (
             <li

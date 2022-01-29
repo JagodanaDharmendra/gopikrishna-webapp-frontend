@@ -95,7 +95,7 @@ const Assessments: React.FC<any> = () => {
         </div>
         <Tab.Group
           onChange={(index) => {
-            console.log("Changed selected tab to:", index);
+            // console.log("Changed selected tab to:", index);
             setTypeAssessment(
               index == 0
                 ? ITypeAssessment.BT
