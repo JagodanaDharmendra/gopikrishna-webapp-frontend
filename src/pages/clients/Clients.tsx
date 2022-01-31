@@ -53,12 +53,9 @@ const Clients: React.FC<any> = () => {
               })}
             </Tab.List>
             <Tab.Panels className="flex w-full mt-4">
-              <Tab.Panel>
-                <ClientsList />
-              </Tab.Panel>
-              <Tab.Panel>
-                <CreateClientForm />
-              </Tab.Panel>
+              {tabs.map((value, index) => {
+                return <Tab.Panel>{value.view()}</Tab.Panel>;
+              })}
             </Tab.Panels>
           </Tab.Group>
         </div>

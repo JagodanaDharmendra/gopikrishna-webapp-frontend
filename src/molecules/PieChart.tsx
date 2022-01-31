@@ -32,6 +32,7 @@ const PieChart: React.FC<IProps> = (props: IProps & any) => {
         ],
         borderColor: ["rgba(255, 255, 255, 1)"],
         borderWidth: 0,
+        hoverOffset: 4,
       },
     ],
   };
@@ -40,19 +41,16 @@ const PieChart: React.FC<IProps> = (props: IProps & any) => {
     scales: {},
     plugins: {
       legend: {
-        display: false,
+        display: true,
+      },
+      tooltips: {
+        backgroundColor: "#5a6e7f",
       },
     },
   };
 
   return (
-    <div
-      // style={{
-      //   height: height,
-      //   width: width,
-      // }}
-      className={className}
-    >
+    <div className={className}>
       <Pie data={data} height={height} width={width} options={options} />
     </div>
   );

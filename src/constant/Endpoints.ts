@@ -23,13 +23,20 @@ class Endpoints {
     CREATE_CLIENT: this.joinPaths(this.CLIENT, "create"),
     EDIT_CLIENT: this.joinPaths(this.CLIENT, "edit"),
     DELETE_CLIENT: this.joinPaths(this.CLIENT, "delete"),
-    FIND_CLIENT: this.joinPaths(this.CLIENT, "find"),
+    FIND_CLIENT: (client_id: string) => {
+      return this.joinPaths(this.CLIENT, `find?client_id=${client_id}`);
+    },
     FIND_ALL_CLIENT: this.joinPaths(this.CLIENT, "findAll"),
 
     //ASSESSMENTS
     CREATE_ASSESSMENT: this.joinPaths(this.ASSESSMENT, "create"),
     EDIT_ASSESSMENT: this.joinPaths(this.ASSESSMENT, "edit"),
-    FIND_ASSESSMENT: this.joinPaths(this.ASSESSMENT, "find"),
+    FIND_ALL_ASSESSMENTS: (assessmentType: string) => {
+      return this.joinPaths(this.ASSESSMENT, `findAll?assessmentType=${assessmentType}`);
+    },
+    FIND_ALL_ASSESSMENTS_FOR_CLIENT: (client_id: string) => {
+      return this.joinPaths(this.ASSESSMENT, `findAllForClient?client_id=${client_id}`);
+    },
     FIND_AS_PDF_ASSESSMENT: this.joinPaths(this.ASSESSMENT, "findAsPDF"),
     EMAIL_ASSESSMENT: this.joinPaths(this.ASSESSMENT, "email"),
   };

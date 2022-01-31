@@ -19,6 +19,7 @@ export interface IProps {
 const BTForm = (props: IProps) => {
   const formRef: React.MutableRefObject<FormikProps<IFormValues>> =
     useRef<any>();
+
   const validate = Yup.object({
     name: Yup.string()
       .max(15, "Must be 15 characters or less")
@@ -57,7 +58,7 @@ const BTForm = (props: IProps) => {
         validationSchema={validate}
       >
         <Form>
-          <Input name="name" label="Name" onChange={handleChange} required />
+          <Input name="name" label="Name" onChange={handleChange} required value={props.initialValues.name} />
           <Input
             name="family_history"
             label="Family History"

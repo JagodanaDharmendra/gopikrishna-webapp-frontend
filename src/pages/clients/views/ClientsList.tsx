@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { Button, Label } from "../../../atoms";
 import { API } from "../../../constant/Endpoints";
 import * as apiService from "../../../api-call";
+import { Link } from "react-router-dom";
 
 interface ITypeClient {
+  client_id: string;
   name: string;
   mobile_no: string;
   email: string;
@@ -72,14 +74,31 @@ const View = () => {
                   Mobile Number: {value.mobile_no}
                 </div>
               </div>
-              <div className="flex justify-end items-center content-center">
+              <div className="flex justify-end items-center content-center space-x-2">
+                <Link
+                  to={`/dashboard/assessment/${value.client_id}`}
+                  className="flex items-center py-4 col-span-1"
+                >
+                  <Button secondary onClick={() => {}}>
+                    <Label title="Edit Assessment" className="text-white" />
+                  </Button>
+                </Link>
+
+                <Link
+                  to={`/dashboard/clients/edit/${value.client_id}`}
+                  className="flex items-center py-4 col-span-1"
+                >
+                  <Button secondary onClick={() => {}}>
+                    <Label title="Edit" className="text-white" />
+                  </Button>
+                </Link>
                 <Button
                   secondary
                   onClick={() => {
                     deleteClient({ email: value.email });
                   }}
                 >
-                  <Label title="Delete" className=" text-white" />
+                  <Label title="Delete" className="text-white" />
                 </Button>
               </div>
             </div>

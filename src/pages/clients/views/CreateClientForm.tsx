@@ -1,5 +1,5 @@
 import { Formik, Form, FormikProps, Field } from "formik";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as Yup from "yup";
 import { API } from "../../../constant/Endpoints";
 import * as apiService from "../../../api-call";
@@ -9,18 +9,49 @@ interface ITypeClient {
   name: string;
   mobile_no: string;
   email: string;
-  assessment: "BT" | "ST" | "OT";
+  assessment: Array<string>;
 }
 
-const View = () => {
+interface IProps {
+  client_id?: string;
+}
+
+const View = (props: IProps) => {
+  const { client_id } = props;
+  const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState<string>("");
 
-  const formValues: ITypeClient = {
+  const [formValues, setFormValues] = useState<ITypeClient>({
     name: "",
     mobile_no: "",
     email: "",
-    assessment: "BT",
-  };
+    assessment: [],
+  });
+
+  useEffect(() => {
+    async function loadData() {
+      if (client_id === undefined) {
+        // setError("Client id not found");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const api = API.ENDPOINTS.FIND_CLIENT(client_id);
+        const result = await apiService.getApi(api);
+        const data = result.data.data;
+        console.log(data);
+        setFormValues({ ...data });
+      } catch (error: any) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadData();
+  }, [client_id]);
 
   const formRef: React.MutableRefObject<FormikProps<ITypeClient>> =
     useRef<any>();
@@ -34,15 +65,17 @@ const View = () => {
       .min(10, "Must be 10 characters")
       .required("Required"),
     email: Yup.string().required("Required"),
-    assessment: Yup.string().required("Required"),
+    assessment: Yup.array().required("Required"),
   });
 
   async function handleSubmit(values: ITypeClient, callback: () => void) {
     setError("");
     try {
-      const api = API.ENDPOINTS.CREATE_CLIENT;
+      const api = client_id
+        ? API.ENDPOINTS.EDIT_CLIENT
+        : API.ENDPOINTS.CREATE_CLIENT;
       await apiService.postApi(api, values);
-      console.log("Create client done...");
+      console.log("client update done...");
     } catch (error: any) {
       console.log(error);
       setError("Unknown error occured. Please try again later");
@@ -51,13 +84,16 @@ const View = () => {
     }
   }
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="flex w-full">
       <div>
         <Formik
-          initialValues={{ ...formValues }}
+          initialValues={formValues}
           onSubmit={(values, {}) => {
-            console.log(values);
             handleSubmit(values, () => {});
           }}
           innerRef={formRef}
@@ -80,19 +116,19 @@ const View = () => {
             />
             <div
               role="group"
-              aria-labelledby="assessment"
               className="space-x-3"
+              aria-labelledby="checkbox-group"
             >
               <label>
-                <Field type="radio" name="assessment" value="BT" />
+                <Field type="checkbox" name="assessment" value="BT" />
                 <span className="pl-2">BT</span>
               </label>
               <label>
-                <Field type="radio" name="assessment" value="ST" />
+                <Field type="checkbox" name="assessment" value="ST" />
                 <span className="pl-2">ST</span>
               </label>
               <label>
-                <Field type="radio" name="assessment" value="OT" />
+                <Field type="checkbox" name="assessment" value="OT" />
                 <span className="pl-2">OT</span>
               </label>
             </div>
