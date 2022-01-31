@@ -5,7 +5,9 @@ import {
   Dashboard,
   Clients,
   Assessments,
+  AssessmentsEdit,
   Users,
+  ClientsEdit,
 } from "../pages";
 import { AuthProvider, OnAuth, RequireAuth } from "../pages/login/AuthProvide";
 
@@ -33,7 +35,12 @@ export default function AppRoutes() {
           >
             <Route index element={<Dashboard />} />
             <Route path="clients" element={<Clients />} />
+            <Route path="clients/edit/:client_id" element={<ClientsEdit />} />
             <Route path="assessments" element={<Assessments />} />
+            <Route path="assessment/:client_id">
+              <Route path=":assessmentType" element={<AssessmentsEdit />} />
+              <Route path="" element={<AssessmentsEdit />} />
+            </Route>
             <Route path="users" element={<Users />} />
             <Route
               path="*"
