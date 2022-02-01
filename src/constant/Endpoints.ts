@@ -37,7 +37,9 @@ class Endpoints {
     FIND_ALL_ASSESSMENTS_FOR_CLIENT: (client_id: string) => {
       return this.joinPaths(this.ASSESSMENT, `findAllForClient?client_id=${client_id}`);
     },
-    FIND_AS_PDF_ASSESSMENT: this.joinPaths(this.ASSESSMENT, "findAsPDF"),
+    FIND_AS_PDF_ASSESSMENT: (client_id: string, assessmentType: string) => {
+      return this.joinPaths(this.ASSESSMENT, `findAsPDF?client_id=${client_id}&assessmentType=${assessmentType}`);
+    },
     EMAIL_ASSESSMENT: this.joinPaths(this.ASSESSMENT, "email"),
   };
 

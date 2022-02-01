@@ -4,6 +4,7 @@ import { Button, Label } from "../../../../atoms";
 interface IType {
   client_id: string;
   assessmentType: String;
+  label?: String;
 }
 
 const ButtonEditAssessment = (props: IType) => {
@@ -13,7 +14,10 @@ const ButtonEditAssessment = (props: IType) => {
       className="flex items-center py-4 col-span-1"
     >
       <Button secondary onClick={() => {}}>
-        <Label title="View Assessment" className="text-white" />
+        <Label
+          title={`${props.label ?? "View Assessment"}`}
+          className="text-white"
+        />
       </Button>
     </Link>
   );

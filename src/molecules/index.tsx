@@ -7,3 +7,4 @@ export { default as UserProfileMenuItem } from "./UserProfileMenuItem";
 export { default as DateRangeSelectionItems } from "./DateRangeSelectionItems";
 export { default as LogoutMenu } from "./LogoutMenu";
 export { default as PieChart } from "./PieChart";
+export { default as PDFViewer } from "./PDFViewer";
