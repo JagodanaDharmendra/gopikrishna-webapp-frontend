@@ -8,6 +8,7 @@ const ItemDraftAssessment = (props: any) => {
         <ButtonEditAssessment
           client_id={props.client_id}
           assessmentType={props.assessmentType}
+          label="Edit"
         />
       </div>
 

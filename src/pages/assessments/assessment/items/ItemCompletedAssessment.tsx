@@ -10,7 +10,6 @@ const ItemCompletedAssessment = (props: any) => {
           assessmentType={props.assessmentType}
         />
       </div>
-
       <div className="flex flex-col">
         {Object.keys(props).map((key) => {
           if (props.hasOwnProperty(key)) {
