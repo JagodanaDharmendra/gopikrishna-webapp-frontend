@@ -58,7 +58,13 @@ const BTForm = (props: IProps) => {
         validationSchema={validate}
       >
         <Form>
-          <Input name="name" label="Name" onChange={handleChange} required value={props.initialValues.name} />
+          <Input
+            name="name"
+            label="Name"
+            onChange={handleChange}
+            required
+            value={props.initialValues.name}
+          />
           <Input
             name="family_history"
             label="Family History"

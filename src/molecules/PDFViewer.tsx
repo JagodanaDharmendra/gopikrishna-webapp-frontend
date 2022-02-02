@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import { useState } from "react";
 
 import { Document, Page, pdfjs } from "react-pdf";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -20,6 +20,14 @@ const PDFViewer = (props: IProps) => {
       <Document file={props.href} onLoadSuccess={onDocumentLoadSuccess}>
         <Page pageNumber={pageNumber} />
       </Document>
+      <div>numPages : {numPages}</div>
+      <div
+        onClick={() => {
+          setPageNumber(pageNumber);
+        }}
+      >
+        Change Page
+      </div>
     </div>
   );
 };

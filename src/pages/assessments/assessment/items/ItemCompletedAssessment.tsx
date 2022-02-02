@@ -19,6 +19,7 @@ const ItemCompletedAssessment = (props: any) => {
               </div>
             );
           }
+          return null;
         })}
       </div>
     </div>

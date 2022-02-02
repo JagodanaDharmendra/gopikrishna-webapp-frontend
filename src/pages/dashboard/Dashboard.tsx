@@ -22,13 +22,13 @@ const Dashboard: React.FC<any> = () => {
       const data: Array<any> = result.data.data;
       setStatistics({
         bt: data.filter(
-          (X) => X.assessmentType == "BT" && !X.email_sent && !X.draft
+          (X) => X.assessmentType === "BT" && !X.email_sent && !X.draft,
         ).length,
         st: data.filter(
-          (X) => X.assessmentType == "ST" && !X.email_sent && !X.draft
+          (X) => X.assessmentType === "ST" && !X.email_sent && !X.draft,
         ).length,
         ot: data.filter(
-          (X) => X.assessmentType == "OT" && !X.email_sent && !X.draft
+          (X) => X.assessmentType === "OT" && !X.email_sent && !X.draft,
         ).length,
       });
     } catch (error: any) {

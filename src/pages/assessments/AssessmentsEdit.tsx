@@ -1,6 +1,6 @@
+// eslint-disable-next-line react-hooks/exhaustive-deps
 import { Tab } from "@headlessui/react";
-import _ from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 //
 import * as apiService from "../../api-call";
@@ -58,13 +58,52 @@ const AssessmentsEdit: React.FC<any> = () => {
     recommendations: "",
   });
 
+  const _updateForms = useCallback(
+    (data: Array<any>) => {
+      const updateBTForm = (item: Array<any>) => {
+        const data = item && item.length !== 0 ? item[0] : undefined;
+        if (clientAssessments.includes("BT") && data) {
+          // console.log("updateBTForm");
+          setBTFormValues({ ...data });
+        }
+      };
+
+      const updateSTForm = (item: Array<any>) => {
+        const data = item && item.length !== 0 ? item[0] : undefined;
+        if (clientAssessments.includes("ST") && data) {
+          // console.log("updateSTForm");
+          setSTFormValues({ ...data });
+        }
+      };
+
+      const updateOTForm = (item: Array<any>) => {
+        const data = item && item.length !== 0 ? item[0] : undefined;
+        if (clientAssessments.includes("OT") && data) {
+          // console.log("updateOTForm");
+          setOTFormValues({ ...data });
+        }
+      };
+
+      updateBTForm(data.filter((X: any) => X.assessmentType === "BT"));
+      updateSTForm(data.filter((X: any) => X.assessmentType === "ST"));
+      updateOTForm(data.filter((X: any) => X.assessmentType === "OT"));
+    },
+    [clientAssessments],
+  );
+
+  // function updateForms(data: Array<any>) {
+  //   updateBTForm(data.filter((X: any) => X.assessmentType === "BT"));
+  //   updateSTForm(data.filter((X: any) => X.assessmentType === "ST"));
+  //   updateOTForm(data.filter((X: any) => X.assessmentType === "OT"));
+  // }
+
   useEffect(() => {
     document.title = "AssessmentsEdit - Admin App";
   }, []);
 
   useEffect(() => {
     async function loadData() {
-      if (client_id == undefined) {
+      if (client_id === undefined) {
         setError("Client id not found");
         return;
       }
@@ -73,7 +112,7 @@ const AssessmentsEdit: React.FC<any> = () => {
         const api = API.ENDPOINTS.FIND_CLIENT(client_id);
         const result = await apiService.getApi(api);
         const data = result.data.data;
-        console.log(data);
+        // console.log(data);
         setClientAssessments([...data.assessment]);
       } catch (error: any) {
         setError(error.message);
@@ -85,7 +124,7 @@ const AssessmentsEdit: React.FC<any> = () => {
 
   useEffect(() => {
     async function loadData() {
-      if (client_id == undefined) {
+      if (client_id === undefined) {
         setError("Client id not found");
         return;
       }
@@ -93,11 +132,10 @@ const AssessmentsEdit: React.FC<any> = () => {
       try {
         const api = API.ENDPOINTS.FIND_ALL_ASSESSMENTS_FOR_CLIENT(client_id);
         const result = await apiService.getApi(api);
-        console.log(result.data.data);
-        const data: [] = result.data.data;
-        updateBTForm(data.filter((X: any) => X.assessmentType === "BT"));
-        updateSTForm(data.filter((X: any) => X.assessmentType === "ST"));
-        updateOTForm(data.filter((X: any) => X.assessmentType === "OT"));
+        // console.log(result.data.data);
+        const data: Array<any> = result.data.data;
+
+        _updateForms(data);
       } catch (error: any) {
         setError(error.message);
       } finally {
@@ -106,31 +144,7 @@ const AssessmentsEdit: React.FC<any> = () => {
     }
 
     loadData();
-  }, [clientAssessments]);
-
-  function updateBTForm(item: Array<any>) {
-    const data = item && item.length != 0 ? item[0] : undefined;
-    if (clientAssessments.includes("BT") && data) {
-      // console.log("updateBTForm");
-      setBTFormValues({ ...data });
-    }
-  }
-
-  function updateSTForm(item: Array<any>) {
-    const data = item && item.length != 0 ? item[0] : undefined;
-    if (clientAssessments.includes("ST") && data) {
-      // console.log("updateSTForm");
-      setSTFormValues({ ...data });
-    }
-  }
-
-  function updateOTForm(item: Array<any>) {
-    const data = item && item.length != 0 ? item[0] : undefined;
-    if (clientAssessments.includes("OT") && data) {
-      // console.log("updateOTForm");
-      setOTFormValues({ ...data });
-    }
-  }
+  }, [clientAssessments, client_id, _updateForms]);
 
   const submitForm = async (values: any) => {
     // const id = toast.loading("Please wait...");
@@ -200,7 +214,7 @@ const AssessmentsEdit: React.FC<any> = () => {
       <div className="flex flex-col">
         <Tab.Group
           defaultIndex={
-            assessmentType == "OT" ? 2 : assessmentType == "ST" ? 1 : 0
+            assessmentType === "OT" ? 2 : assessmentType === "ST" ? 1 : 0
           }
           onChange={(index) => {
             // console.log("Changed selected tab to:", index);
@@ -214,7 +228,7 @@ const AssessmentsEdit: React.FC<any> = () => {
                   className={({ selected }) =>
                     classNames(
                       "w-full py-2.5 text-sm leading-5 font-medium  rounded-lg",
-                      selected ? "bg-white shadow text-primary" : "text-white"
+                      selected ? "bg-white shadow text-primary" : "text-white",
                     )
                   }
                 >

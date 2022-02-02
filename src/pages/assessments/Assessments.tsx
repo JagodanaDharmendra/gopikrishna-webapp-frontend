@@ -49,7 +49,9 @@ const Assessments: React.FC<any> = () => {
                     className={({ selected }) =>
                       classNames(
                         "w-full py-2.5 text-sm leading-5 font-medium  rounded-lg",
-                        selected ? "bg-white shadow text-primary" : "text-white"
+                        selected
+                          ? "bg-white shadow text-primary"
+                          : "text-white",
                       )
                     }
                   >

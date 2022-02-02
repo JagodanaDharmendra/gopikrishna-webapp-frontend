@@ -11,7 +11,7 @@ export const getApi = (api: string) => {
 
 export const postApi = async (
   api: string,
-  data: any
+  data: any,
 ): Promise<AxiosResponse<any, any>> => {
   const config = {
     headers: { Authorization: `Bearer ${token()}` },
@@ -21,7 +21,7 @@ export const postApi = async (
       .apiPost(api, data, config)
       .then(resolve)
       .catch((err: AxiosError) => {
-        reject(err.response)
+        reject(err.response);
       });
   });
 };

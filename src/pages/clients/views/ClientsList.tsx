@@ -15,7 +15,7 @@ interface ITypeClient {
 const View = () => {
   const [loading, setLoading] = useState(false);
   const [clients, setClients] = useState<Array<ITypeClient>>([]);
-  const [error, setError] = useState<string>("");
+  const [, setError] = useState<string>("");
 
   async function loadData() {
     try {
@@ -50,12 +50,11 @@ const View = () => {
   }
   return (
     <ul className="flex flex-col mt-4">
-      {!clients ||
-        (clients.length == 0 && (
-          <div className="w-full justify-center items-center text-center">
-            <h1>No data found for Clients</h1>
-          </div>
-        ))}
+      {(!clients || clients.length === 0) && (
+        <div className="w-full justify-center items-center text-center">
+          <h1>No data found for Clients</h1>
+        </div>
+      )}
       {clients?.map((value: ITypeClient, index: number) => {
         return (
           <li

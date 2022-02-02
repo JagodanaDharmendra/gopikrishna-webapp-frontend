@@ -25,7 +25,7 @@ const Icon: React.FC<IProps> = ({
   ...rest
 }) => {
   let iconColor = "#323232";
-  if (iconColorType != undefined) {
+  if (iconColorType !== undefined) {
     switch (iconColorType) {
       case IconColorType.primary:
         iconColor = "#00DEDE";
@@ -49,6 +49,7 @@ const Icon: React.FC<IProps> = ({
     },
     ...rest,
   };
+  console.log(restProps);
 
   switch (iconName) {
     default:

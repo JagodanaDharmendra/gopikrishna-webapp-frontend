@@ -40,7 +40,7 @@ const Select: React.FC<IProps> = (props: IProps) => {
 
   useEffect(() => {
     onSelectionChange(selectedValue);
-  }, [selectedValue]);
+  }, [selectedValue, onSelectionChange]);
 
   useEffect(() => {
     const optionValues: Array<IOption> = [
@@ -53,7 +53,7 @@ const Select: React.FC<IProps> = (props: IProps) => {
       }),
     ];
     setOptions(optionValues);
-  }, []);
+  }, [defaultOptions]);
 
   return (
     <div className={`block gap-2 ${className}`} style={style}>

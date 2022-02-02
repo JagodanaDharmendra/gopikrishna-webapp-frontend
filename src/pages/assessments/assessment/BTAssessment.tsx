@@ -45,16 +45,16 @@ const BTAssessment = () => {
     return <div>Loading...</div>;
   }
 
-  if (!assessments || assessments.length == 0) {
+  if (!assessments || assessments.length === 0) {
     return <div>No Assessments found</div>;
   }
 
   const draftAssessments = assessments.filter((X) => X.draft && !X.email_sent);
   const pendingAssessments = assessments.filter(
-    (X) => !X.draft && !X.email_sent
+    (X) => !X.draft && !X.email_sent,
   );
   const completedAssessments = assessments.filter(
-    (X) => X.email_sent && !X.draft
+    (X) => X.email_sent && !X.draft,
   );
 
   return (

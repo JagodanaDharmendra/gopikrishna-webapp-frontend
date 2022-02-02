@@ -3,8 +3,8 @@ import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../login/AuthProvide";
 
 import { Button, Icon, IconColorType } from "../../atoms";
-import LogoIcon from "../../assets/logo.svg";
-import { MenuItem, UserProfileMenuItem } from "../../molecules";
+// import LogoIcon from "../../assets/logo.svg";
+import { MenuItem /* UserProfileMenuItem */ } from "../../molecules";
 
 const Layout: React.FC<any> = () => {
   const location = useLocation().pathname;

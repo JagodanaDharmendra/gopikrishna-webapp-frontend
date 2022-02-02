@@ -21,6 +21,7 @@ const ItemDraftAssessment = (props: any) => {
               </div>
             );
           }
+          return null;
         })}
       </div>
     </div>

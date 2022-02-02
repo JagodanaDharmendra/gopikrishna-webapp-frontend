@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { Location, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthProvide";
 import { Button, Input, Label } from "../../atoms";
 
@@ -15,13 +15,14 @@ interface MyFormValues {
 
 function LoginPage() {
   let navigate = useNavigate();
-  let location = useLocation();
+  let location: Location = useLocation();
   let auth = useAuth();
   const initialValues: MyFormValues = {
     userName: "AD01",
     pwd: "12345",
   };
-  let from = location.state?.from?.pathname || "/dashboard";
+  const state: any = location.state;
+  let from = state?.from?.pathname || "/dashboard";
 
   const [error, setError] = useState("");
 
