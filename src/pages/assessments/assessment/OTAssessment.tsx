@@ -49,7 +49,7 @@ const OTAssessment = () => {
     return <div>No Assessments found</div>;
   }
 
-  const draftAssessments = assessments.filter((X) => X.draft && !X.email_sent);
+  const draftAssessments = assessments.filter((X) => X.draft);
   const pendingAssessments = assessments.filter(
     (X) => !X.draft && !X.email_sent,
   );
