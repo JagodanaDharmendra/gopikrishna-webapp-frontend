@@ -1,5 +1,5 @@
 const environment = {
-  baseUrl: "http://localhost:4001",
+  baseUrl: String(process.env.REACT_APP_BASE_URL),
 };
 
 class Endpoints {
