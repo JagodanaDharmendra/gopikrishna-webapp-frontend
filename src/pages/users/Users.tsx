@@ -56,7 +56,8 @@ function View() {
       pwd: pwd ?? "",
       department: department ?? "",
     });
-  }, [formValues]);
+    // }, [formValues]);
+  });
 
   async function loadData() {
     const api = API.ENDPOINTS.FIND_ALL_USER;
@@ -65,8 +66,8 @@ function View() {
       const data = result.data.data;
       setUsers(
         data.filter((X: any) => {
-          return X.department != "AD";
-        })
+          return X.department !== "AD";
+        }),
       );
     } catch (error: any) {
       setUsers([]);
@@ -79,11 +80,11 @@ function View() {
   async function deleteUser(values: any) {
     try {
       const api = API.ENDPOINTS.DELETE_USER;
-      const result = await apiService.postApi(api, values);
+      await apiService.postApi(api, values);
       setUsers(
         users.filter((x) => {
-          return x.userName != values.userName;
-        })
+          return x.userName !== values.userName;
+        }),
       );
     } catch (error: any) {
       console.log(error);
@@ -104,7 +105,7 @@ function View() {
       <div>
         <Formik
           initialValues={{ ...formValues }}
-          onSubmit={(values, {}) => {
+          onSubmit={(values) => {
             handleSubmit(values, () => {});
           }}
           innerRef={formRef}
@@ -139,7 +140,7 @@ function View() {
       </div>
       <ul className="flex flex-col mt-4">
         {!users ||
-          (users.length == 0 && (
+          (users.length === 0 && (
             <div className="w-full justify-center items-center text-center">
               <h1>No data found for Users</h1>
             </div>

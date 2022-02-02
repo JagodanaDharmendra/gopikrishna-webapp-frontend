@@ -36,7 +36,7 @@ const Input: React.FC<IProps> = (props: IProps & any) => {
     required,
     ...rest
   } = props;
-  const [field, meta] = useField(props);
+  const [field] = useField(props);
 
   const [focused, setFocus] = useState(false);
 

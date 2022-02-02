@@ -40,7 +40,7 @@ const Label: React.FC<IProps> = (props: IProps & any) => {
     regular && "font-normal",
     light && "font-light",
     gray && "text-gray",
-    className
+    className,
   );
 
   return (

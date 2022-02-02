@@ -93,7 +93,7 @@ const View = (props: IProps) => {
       <div>
         <Formik
           initialValues={formValues}
-          onSubmit={(values, {}) => {
+          onSubmit={(values) => {
             handleSubmit(values, () => {});
           }}
           innerRef={formRef}

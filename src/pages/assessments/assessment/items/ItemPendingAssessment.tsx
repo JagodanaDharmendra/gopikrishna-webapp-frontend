@@ -4,7 +4,7 @@ import { API } from "../../../../constant/Endpoints";
 import * as apiService from "../../../../api-call";
 
 const ItemPendingAssessment = (props: any) => {
-  const [filePath, setFilePath] = useState("");
+  const [, setFilePath] = useState("");
 
   async function sendMail() {
     console.log("Send Email Clicked");
@@ -23,12 +23,12 @@ const ItemPendingAssessment = (props: any) => {
     try {
       const api = API.ENDPOINTS.FIND_AS_PDF_ASSESSMENT(
         props.client_id,
-        props.assessmentType
+        props.assessmentType,
       );
       const result = await apiService.getApi(api);
-      const filePath = `${API.baseUrl}/${result.data.data.fileName}`;
-      openInNewTab(filePath);
-      setFilePath(filePath);
+      const _filePath = `${API.baseUrl}/${result.data.data.fileName}`;
+      openInNewTab(_filePath);
+      setFilePath(_filePath);
     } catch (error: any) {
       console.log(error.message | error);
     }
@@ -66,6 +66,7 @@ const ItemPendingAssessment = (props: any) => {
               </div>
             );
           }
+          return null;
         })}
       </div>
     </div>

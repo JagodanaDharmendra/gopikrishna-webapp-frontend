@@ -41,7 +41,7 @@ const Button: React.FC<IProps> = (props: IProps & any) => {
     primary && "bg-primary text-white",
     secondary && "bg-orange text-midGray",
     disabled && "bg-gray text-darkGray",
-    className
+    className,
   );
 
   return (
