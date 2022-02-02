@@ -45,7 +45,7 @@ const Dashboard: React.FC<any> = () => {
 
   useEffect(() => {
     loadData();
-  }, []);
+  });
 
   if (loading) {
     return <div>Loading...</div>;
@@ -54,7 +54,7 @@ const Dashboard: React.FC<any> = () => {
   const bt = DashboardReaders.GetChartValue(statistics, "bt");
   const st = DashboardReaders.GetChartValue(statistics, "st");
   const ot = DashboardReaders.GetChartValue(statistics, "ot");
-  const showGraph = bt != 0 || st != 0 || ot != 0;
+  const showGraph = bt !== 0 || st !== 0 || ot !== 0;
   return (
     <>
       <div className="px-6 mt-4 float-auto">
