@@ -4,12 +4,14 @@ import * as Yup from "yup";
 import * as apiService from "../../api-call";
 import { Button, Input, Label, Select } from "../../atoms";
 import { API } from "../../constant/Endpoints";
+import { Search } from "../../molecules";
 import { ITypeUser, UserItem } from "./components";
 
 function View() {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<Array<ITypeUser>>([]);
   const [error, setError] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const formValues: ITypeUser = {
     userName: "",
@@ -108,6 +110,23 @@ function View() {
     return <div>Loading...</div>;
   }
 
+  const userSearchResult =
+    users &&
+    users.filter((value: ITypeUser) => {
+      if (!searchQuery || searchQuery.length <= 0) {
+        return true;
+      }
+      if (
+        searchQuery &&
+        searchQuery.length > 0 &&
+        (value.userName.includes(searchQuery) ||
+          value.department.includes(searchQuery))
+      ) {
+        return true;
+      }
+      return false;
+    });
+
   return (
     <div className="px-8">
       <div>
@@ -153,16 +172,42 @@ function View() {
           </Form>
         </Formik>
       </div>
+      <div className="flex my-3">
+        <Search
+          onSearch={(query) => {
+            setSearchQuery(query);
+          }}
+          onClear={() => {
+            setSearchQuery("");
+          }}
+        />
+      </div>
       <ul className="flex flex-col mt-4">
-        {!users ||
-          (users.length === 0 && (
+        {!userSearchResult ||
+          (userSearchResult.length === 0 && (
             <div className="w-full justify-center items-center text-center">
               <h1>No users found</h1>
             </div>
           ))}
-        {users?.map((value: ITypeUser, index: number) => {
-          return <UserItem index={index} value={value} onClick={deleteUser} />;
-        })}
+        {userSearchResult
+          ?.filter((value: ITypeUser) => {
+            if (!searchQuery || searchQuery.length === 0) {
+              return value;
+            }
+            if (
+              value.userName.includes(searchQuery) ||
+              value.department.includes(searchQuery)
+            ) {
+              return value;
+            } else {
+              return null;
+            }
+          })
+          .map((value: ITypeUser, index: number) => {
+            return (
+              <UserItem index={index} value={value} onClick={deleteUser} />
+            );
+          })}
       </ul>
     </div>
   );
