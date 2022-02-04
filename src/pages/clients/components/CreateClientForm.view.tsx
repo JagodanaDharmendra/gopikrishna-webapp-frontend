@@ -72,8 +72,11 @@ function CreateClientForm(props: IProps) {
 
   const formRef: React.MutableRefObject<FormikProps<ITypeClient>> =
     useRef<any>();
+
+  const emailRegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
   const validate = Yup.object({
     mobile_no: Yup.string()
       .matches(phoneRegExp, "Mobile number is not valid")
@@ -87,17 +90,39 @@ function CreateClientForm(props: IProps) {
     alt_mobile_no: Yup.string()
       .matches(phoneRegExp, "Mobile number is not valid")
       .notRequired(),
-    email: Yup.string().required("Required"),
-    address: Yup.string().required("Required"),
-    mother_tongue: Yup.string().required("Required"),
-    f_name: Yup.string().required("Required"),
-    m_name: Yup.string().required("Required"),
+    email: Yup.string()
+      .matches(emailRegExp, "Email address is not valid")
+      .required("Required"),
+    address: Yup.string()
+      .required("Required")
+      .max(250, "Must be 250 characters or less")
+      .min(5, "5 Characters or more"),
+    mother_tongue: Yup.string()
+      .required("Required")
+      .max(25, "Must be 25 characters or less")
+      .min(2, "2 Characters or more"),
+    f_name: Yup.string()
+      .max(25, "Must be 25 characters or less")
+      .min(3, "3 Characters or more")
+      .required("Required"),
+    m_name: Yup.string()
+      .max(25, "Must be 25 characters or less")
+      .min(3, "3 Characters or more")
+      .required("Required"),
     discontinued: Yup.bool().required("Required"),
     discontinued_on: Yup.string().notRequired(),
-    branch: Yup.string().required("Required"),
+    branch: Yup.string()
+      .max(3, "Must be 3 characters or less")
+      .required("Required"),
     assessment: Yup.array().required("Required"),
-    chief_complaints: Yup.string().required("Required"),
-    diagnosis: Yup.string().required("Required"),
+    chief_complaints: Yup.string()
+      .max(100, "Must be 250 characters or less")
+      .min(5, "5 Characters or more")
+      .required("Required"),
+    diagnosis: Yup.string()
+      .max(100, "Must be 50 characters or less")
+      .min(2, "2 Characters or more")
+      .required("Required"),
     slot_time: Yup.string().required("Required"),
     therapy: Yup.array().required("Required"),
   });
