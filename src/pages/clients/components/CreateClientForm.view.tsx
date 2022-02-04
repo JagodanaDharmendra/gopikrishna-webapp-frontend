@@ -54,7 +54,6 @@ function CreateClientForm(props: IProps) {
         const api = API.ENDPOINTS.FIND_CLIENT(String(client_id));
         const result = await apiService.getApi(api);
         const data = result.data.data;
-        console.log(data);
         setFormValues({
           ...data,
           dob: data.dob.toString(),
@@ -110,7 +109,6 @@ function CreateClientForm(props: IProps) {
         ? API.ENDPOINTS.CREATE_CLIENT
         : API.ENDPOINTS.EDIT_CLIENT;
       await apiService.postApi(api, values);
-      console.log("client update done...");
       if (isClientNull()) {
         window.alert("The client successfully created.");
         callback();
