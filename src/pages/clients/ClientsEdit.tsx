@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { CreateClientForm } from "./views";
+import { CreateClientForm } from "./components";
 
-const Clients: React.FC<any> = () => {
+function ClientsEdit() {
   let params = useParams();
   const client_id = params.client_id;
 
@@ -14,7 +14,9 @@ const Clients: React.FC<any> = () => {
     <>
       <div className="px-4 mt-4 float-auto">
         <div className="flex flex-col">
-          <div>Client Edit</div>
+          <h1 className="flex w-full justify-center text-center font-bold text-primary uppercase text-xl">
+            Client Edit
+          </h1>
           <div className="m-4">
             <CreateClientForm client_id={client_id} />
           </div>
@@ -22,6 +24,6 @@ const Clients: React.FC<any> = () => {
       </div>
     </>
   );
-};
+}
 
-export default Clients;
+export default ClientsEdit;
