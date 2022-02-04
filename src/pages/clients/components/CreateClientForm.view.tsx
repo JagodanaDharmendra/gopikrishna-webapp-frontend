@@ -37,16 +37,21 @@ function CreateClientForm(props: IProps) {
     therapy: [],
   });
 
+  function isClientNull() {
+    return (
+      client_id === undefined || client_id === null || client_id.length === 0
+    );
+  }
+
   useEffect(() => {
     async function loadData() {
-      if (client_id === undefined) {
+      if (isClientNull()) {
         setLoading(false);
-        // setError("Client id must be not null");
         return;
       }
 
       try {
-        const api = API.ENDPOINTS.FIND_CLIENT(client_id);
+        const api = API.ENDPOINTS.FIND_CLIENT(String(client_id));
         const result = await apiService.getApi(api);
         const data = result.data.data;
         console.log(data);
@@ -101,16 +106,20 @@ function CreateClientForm(props: IProps) {
   async function handleSubmit(values: ITypeClient, callback: () => void) {
     setError("");
     try {
-      const api = client_id
-        ? API.ENDPOINTS.EDIT_CLIENT
-        : API.ENDPOINTS.CREATE_CLIENT;
+      const api = isClientNull()
+        ? API.ENDPOINTS.CREATE_CLIENT
+        : API.ENDPOINTS.EDIT_CLIENT;
       await apiService.postApi(api, values);
       console.log("client update done...");
+      if (isClientNull()) {
+        window.alert("The client successfully created.");
+        callback();
+      } else {
+        window.alert("The client successfully updated.");
+      }
     } catch (error: any) {
       console.log(error);
       setError("Unknown error occured. Please try again later");
-    } finally {
-      callback();
     }
   }
 
@@ -122,8 +131,12 @@ function CreateClientForm(props: IProps) {
     <div className="flex w-full">
       <Formik
         initialValues={formValues}
-        onSubmit={(values) => {
-          handleSubmit(values, () => {});
+        onSubmit={(values, { resetForm }) => {
+          handleSubmit(values, () => {
+            if (isClientNull()) {
+              resetForm();
+            }
+          });
         }}
         innerRef={formRef}
         validationSchema={validate}
@@ -262,7 +275,7 @@ function CreateClientForm(props: IProps) {
               shadow
               type="submit"
             >
-              Submit
+              {isClientNull() ? "Submit" : "Update"}
             </Button>
           </div>
         </Form>
