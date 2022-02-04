@@ -59,7 +59,7 @@ const Input: React.FC<IProps> = (props: IProps & any) => {
         />
       )}
       <div
-        className={`flex border rounded w-full py-2 mt-2 max-h-9 caret-primary ${
+        className={`flex border rounded w-full py-2 mt-2 max-h-9 caret-primary bg-white ${
           focused ? "border-primary" : "border-gray"
         }`}
       >
@@ -67,7 +67,7 @@ const Input: React.FC<IProps> = (props: IProps & any) => {
         <input
           autoComplete="off"
           placeholder={placeholder}
-          className="w-full px-2 focus:border-0 focus:ring-0 active:border-0 active:ring-0 focus:outline-none"
+          className="w-full px-2 focus:border-0 focus:ring-0 active:border-0 active:ring-0 focus:outline-none active:outline-none bg-transparent border-0"
           onFocus={set_focus}
           ref={inputRef}
           {...field}
