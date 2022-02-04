@@ -8,7 +8,7 @@ interface IProps extends ITypeClient {
 
 function ClientItem(props: IProps) {
   return (
-    <div className="px-6 pt-4 pb-2 grid grid-cols-2 justify-between">
+    <div className="px-6 pt-4 pb-2 grid grid-cols-1 lg:grid-cols-2 justify-between">
       <div className="">
         <div className="block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
           Name: {props.name}
@@ -20,7 +20,7 @@ function ClientItem(props: IProps) {
           Mobile Number: {props.mobile_no}
         </div>
       </div>
-      <div className="flex justify-end items-center content-center space-x-2">
+      <div className="flex justify-center lg:justify-end items-center content-center space-x-2">
         <Link
           to={`/dashboard/assessment/${props.client_id}`}
           className="flex items-center py-4 col-span-1"
