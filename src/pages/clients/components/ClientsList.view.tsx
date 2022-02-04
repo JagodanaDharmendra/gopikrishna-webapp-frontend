@@ -23,24 +23,35 @@ function ClientList() {
   }
 
   async function deleteClient(values: { email: string }) {
+    const isConfirm: boolean = window.confirm(
+      `Are you sure you want to remove client(${values.email})?`,
+    );
+    if (!isConfirm) {
+      window.alert("Request to remove a client cancelled.");
+      return;
+    }
+
     try {
       const api = API.ENDPOINTS.DELETE_CLIENT;
       await apiService.postApi(api, values);
       loadData();
+      window.alert("The client successfully removed.");
     } catch (error: any) {
       console.log(error);
     }
   }
 
   useEffect(() => {
+    setLoading(true);
     loadData();
   }, []);
 
   if (loading) {
     return <div>Loading...</div>;
   }
+
   return (
-    <ul className="flex flex-col mt-4">
+    <ul className="flex w-full flex-col">
       {(!clients || clients.length === 0) && (
         <div className="w-full justify-center items-center text-center">
           <h1>No clients found</h1>
@@ -50,7 +61,7 @@ function ClientList() {
         return (
           <li
             key={`${index}_${value.mobile_no}`}
-            className="rounded shadow-lg block m-3"
+            className="rounded shadow-lg block p-2 my-1"
           >
             <ClientItem {...value} onDeleteClick={deleteClient} />
           </li>
