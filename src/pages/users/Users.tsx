@@ -1,15 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import { API } from "../../constant/Endpoints";
-import * as apiService from "../../api-call";
 import { Form, Formik, FormikProps } from "formik";
+import React, { useEffect, useRef, useState } from "react";
 import * as Yup from "yup";
+import * as apiService from "../../api-call";
 import { Button, Input, Label, Select } from "../../atoms";
-
-interface ITypeUser {
-  userName: string;
-  pwd?: string;
-  department: "BT" | "OT" | "ST" | "PT" | "SE" | "FO";
-}
+import { API } from "../../constant/Endpoints";
+import { ITypeUser, UserItem } from "./components";
 
 function View() {
   const [loading, setLoading] = useState(false);
@@ -17,7 +12,7 @@ function View() {
   const [error, setError] = useState<string>("");
 
   const formValues: ITypeUser = {
-    userName: "BT01",
+    userName: "",
     pwd: "",
     department: "BT",
   };
@@ -25,8 +20,13 @@ function View() {
   const formRef: React.MutableRefObject<FormikProps<ITypeUser>> = useRef<any>();
   const validate = Yup.object({
     userName: Yup.string()
-      .max(15, "Must be 15 characters or less")
+      .max(15, "Must be 10 characters or less")
       .min(4, "4 characters or more")
+      .notOneOf(
+        users.map((value) => {
+          return value.userName;
+        }),
+      )
       .required("Required"),
     pwd: Yup.string()
       .max(10, "Must be 10 characters or less")
@@ -40,6 +40,7 @@ function View() {
     try {
       const api = API.ENDPOINTS.CREATE_USER;
       await apiService.postApi(api, values);
+      alert("The user was successfully created.");
       loadData();
     } catch (error: any) {
       console.log(error);
@@ -77,15 +78,23 @@ function View() {
     }
   }
 
-  async function deleteUser(values: any) {
+  async function deleteUser(values: { userName: string }) {
     try {
-      const api = API.ENDPOINTS.DELETE_USER;
-      await apiService.postApi(api, values);
-      setUsers(
-        users.filter((x) => {
-          return x.userName !== values.userName;
-        }),
+      let isConfirm: boolean = confirm(
+        `Are you sure you want to remove this user(${values.userName})?`,
       );
+      if (isConfirm) {
+        const api = API.ENDPOINTS.DELETE_USER;
+        await apiService.postApi(api, values);
+        setUsers(
+          users.filter((x) => {
+            return x.userName !== values.userName;
+          }),
+        );
+        alert("The user was successfully removed.");
+      } else {
+        alert("Request to remove a user was cancelled.");
+      }
     } catch (error: any) {
       console.log(error);
     }
@@ -100,20 +109,26 @@ function View() {
   }
 
   return (
-    <div className="px-12">
-      <div className="px-6 mt-4 float-auto">Users</div>
+    <div className="px-8">
       <div>
         <Formik
           initialValues={{ ...formValues }}
-          onSubmit={(values) => {
-            handleSubmit(values, () => {});
+          onSubmit={(values, { resetForm }) => {
+            handleSubmit(values, () => {
+              resetForm();
+            });
           }}
           innerRef={formRef}
           validationSchema={validate}
         >
           <Form>
             {error && <Label title={error} style={{ color: "#FF0000" }} />}
-            <Input name="userName" label="User Name" required />
+            <Input
+              name="userName"
+              label="User Name"
+              required
+              placeholder="Enter User Name (BT01)"
+            />
             <Input name="pwd" label="Password" required />
             <Select
               label="Department"
@@ -142,37 +157,11 @@ function View() {
         {!users ||
           (users.length === 0 && (
             <div className="w-full justify-center items-center text-center">
-              <h1>No data found for Users</h1>
+              <h1>No users found</h1>
             </div>
           ))}
         {users?.map((value: ITypeUser, index: number) => {
-          return (
-            <li
-              key={`${index}_${value.department}`}
-              className="rounded shadow-lg block m-3"
-            >
-              <div className="px-6 pt-4 pb-2 grid grid-cols-2 justify-between">
-                <div className="">
-                  <div className="block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    Name: {value.userName}
-                  </div>
-                  <div className="block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                    Department: {value.department}
-                  </div>
-                </div>
-                <div className="flex justify-end items-center content-center">
-                  <Button
-                    secondary
-                    onClick={() => {
-                      deleteUser({ userName: value.userName });
-                    }}
-                  >
-                    <Label title="Delete" className=" text-white" />
-                  </Button>
-                </div>
-              </div>
-            </li>
-          );
+          return <UserItem index={index} value={value} onClick={deleteUser} />;
         })}
       </ul>
     </div>
