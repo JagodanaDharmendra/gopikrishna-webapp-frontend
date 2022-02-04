@@ -42,7 +42,7 @@ function View() {
     try {
       const api = API.ENDPOINTS.CREATE_USER;
       await apiService.postApi(api, values);
-      alert("The user was successfully created.");
+      window.alert("The user was successfully created.");
       loadData();
     } catch (error: any) {
       console.log(error);
@@ -82,7 +82,7 @@ function View() {
 
   async function deleteUser(values: { userName: string }) {
     try {
-      let isConfirm: boolean = confirm(
+      let isConfirm: boolean = window.confirm(
         `Are you sure you want to remove this user(${values.userName})?`,
       );
       if (isConfirm) {
@@ -93,9 +93,9 @@ function View() {
             return x.userName !== values.userName;
           }),
         );
-        alert("The user was successfully removed.");
+        window.alert("The user was successfully removed.");
       } else {
-        alert("Request to remove a user was cancelled.");
+        window.alert("Request to remove a user was cancelled.");
       }
     } catch (error: any) {
       console.log(error);
