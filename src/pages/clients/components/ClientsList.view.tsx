@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { API } from "../../../constant/Endpoints";
 import * as apiService from "../../../api-call";
 import { ClientItem, ITypeClient } from ".";
+import { Search } from "../../../molecules";
 
 function ClientList() {
   const [loading, setLoading] = useState(false);
   const [clients, setClients] = useState<Array<ITypeClient>>([]);
   const [, setError] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   async function loadData() {
     try {
@@ -50,24 +52,56 @@ function ClientList() {
     return <div>Loading...</div>;
   }
 
+  const clientSearchResult =
+    clients &&
+    clients.filter((value: ITypeClient) => {
+      if (!searchQuery || searchQuery.length <= 0) {
+        return true;
+      }
+      if (
+        searchQuery &&
+        searchQuery.length > 0 &&
+        (value.name.includes(searchQuery) ||
+          value.email.includes(searchQuery) ||
+          value.mobile_no.includes(searchQuery))
+      ) {
+        return true;
+      }
+      return false;
+    });
+
   return (
-    <ul className="flex w-full flex-col">
-      {(!clients || clients.length === 0) && (
-        <div className="w-full justify-center items-center text-center">
-          <h1>No clients found</h1>
+    <div className="flex justify-center flex-col items-center w-full">
+      {clients.length > 0 && (
+        <div className="flex my-3">
+          <Search
+            onSearch={(query) => {
+              setSearchQuery(query);
+            }}
+            onClear={() => {
+              setSearchQuery("");
+            }}
+          />
         </div>
       )}
-      {clients?.map((value: ITypeClient, index: number) => {
-        return (
-          <li
-            key={`${index}_${value.mobile_no}`}
-            className="rounded shadow-lg block p-2 my-1"
-          >
-            <ClientItem {...value} onDeleteClick={deleteClient} />
-          </li>
-        );
-      })}
-    </ul>
+      <ul className="flex w-full flex-col">
+        {(!clientSearchResult || clientSearchResult.length === 0) && (
+          <div className="w-full justify-center items-center text-center">
+            <h1>No clients found</h1>
+          </div>
+        )}
+        {clientSearchResult?.map((value: ITypeClient, index: number) => {
+          return (
+            <li
+              key={`${index}_${value.mobile_no}`}
+              className="rounded shadow-lg block p-2 my-1"
+            >
+              <ClientItem {...value} onDeleteClick={deleteClient} />
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
 
