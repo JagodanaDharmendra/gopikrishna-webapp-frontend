@@ -50,6 +50,7 @@ function LoginPage() {
         if (data && data.success && data.data) {
           console.log(data.data.admin);
           CookieHelper.SetCookie("token", data.data.token);
+          CookieHelper.SetCookie("user_id", value.userName);
           auth.signin(data.data?.admin?.first_name ?? "Admin", () => {
             callback();
             navigate(from, { replace: true });

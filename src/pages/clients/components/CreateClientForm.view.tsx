@@ -20,7 +20,7 @@ function CreateClientForm(props: IProps) {
     mobile_no: "",
     name: "",
     gender: "male",
-    dob: Date.now().toString(),
+    dob: new Date(),
     alt_mobile_no: "",
     email: "",
     address: "",
@@ -28,12 +28,12 @@ function CreateClientForm(props: IProps) {
     f_name: "",
     m_name: "",
     discontinued: false,
-    discontinued_on: Date.now().toString(),
+    discontinued_on: new Date(),
     branch: "",
     assessment: [],
     chief_complaints: "",
     diagnosis: "",
-    slot_time: Date.now().toString(),
+    slot_time: new Date(),
     therapy: [],
   });
 
@@ -86,7 +86,7 @@ function CreateClientForm(props: IProps) {
       .min(3, "3 Characters or more")
       .required("Required"),
     gender: Yup.string().required("Required"),
-    dob: Yup.string().required("Required"),
+    dob: Yup.date().max(new Date()).required("Required"),
     alt_mobile_no: Yup.string()
       .matches(phoneRegExp, "Mobile number is not valid")
       .notRequired(),
@@ -110,7 +110,7 @@ function CreateClientForm(props: IProps) {
       .min(3, "3 Characters or more")
       .required("Required"),
     discontinued: Yup.bool().required("Required"),
-    discontinued_on: Yup.string().notRequired(),
+    discontinued_on: Yup.date().max(new Date()).notRequired(),
     branch: Yup.string()
       .max(3, "Must be 3 characters or less")
       .required("Required"),
@@ -123,7 +123,7 @@ function CreateClientForm(props: IProps) {
       .max(100, "Must be 50 characters or less")
       .min(2, "2 Characters or more")
       .required("Required"),
-    slot_time: Yup.string().required("Required"),
+    slot_time: Yup.date().max(new Date()).required("Required"),
     therapy: Yup.array().required("Required"),
   });
 

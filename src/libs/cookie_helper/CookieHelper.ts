@@ -1,4 +1,5 @@
 import Cookies, { CookieGetOptions, CookieSetOptions } from "universal-cookie";
+import CryptoJS from "crypto-js";
 
 const cookies = new Cookies();
 const cookieSetOptions: CookieSetOptions = {
@@ -13,11 +14,20 @@ const cookieGetOptions: CookieGetOptions = {
 
 class CookieHelper {
   public static GetCookie(name: string) {
-    return cookies.get<string>(name, cookieGetOptions);
+    const cipherText = cookies.get<string>(name, cookieGetOptions);
+    if (cipherText) {
+      return CryptoJS.AES.decrypt(cipherText, 'gopikrishna!!!pwd').toString(CryptoJS.enc.Utf8);
+    }
+    return "";
   }
 
   public static SetCookie(name: string, value: string) {
-    cookies.set(name, value, cookieSetOptions);
+    if (value) {
+      const cipherText = CryptoJS.AES.encrypt(value, 'gopikrishna!!!pwd').toString();
+      cookies.set(name, cipherText, cookieSetOptions);
+    } else {
+      cookies.set(name, "", cookieSetOptions);
+    }
   }
 
   public static DeleteCookie(name: string) {
