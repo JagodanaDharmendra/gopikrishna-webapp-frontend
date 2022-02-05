@@ -45,7 +45,7 @@ const Dashboard: React.FC<any> = () => {
 
   useEffect(() => {
     loadData();
-  });
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
