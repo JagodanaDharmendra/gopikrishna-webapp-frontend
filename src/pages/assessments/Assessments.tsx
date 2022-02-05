@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Tab } from "@headlessui/react";
-import { BTAssessment, STAssessment, OTAssessment } from ".";
+import { Assessment } from ".";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -10,19 +10,19 @@ const tabs = [
   {
     tabTitle: "BT Assessment",
     view: () => {
-      return <BTAssessment />;
+      return <Assessment assessmentType="BT" />;
     },
   },
   {
     tabTitle: "ST Assessment",
     view: () => {
-      return <STAssessment />;
+      return <Assessment assessmentType="ST" />;
     },
   },
   {
     tabTitle: "OT Assessment",
     view: () => {
-      return <OTAssessment />;
+      return <Assessment assessmentType="OT" />;
     },
   },
 ];
@@ -63,7 +63,10 @@ const Assessments: React.FC<any> = () => {
             <Tab.Panels className="flex w-full mt-4">
               {tabs.map((value, index) => {
                 return (
-                  <Tab.Panel key={`${index}-${value.tabTitle}`}>
+                  <Tab.Panel
+                    key={`${index}-${value.tabTitle}`}
+                    className="flex w-full"
+                  >
                     {value.view()}
                   </Tab.Panel>
                 );
