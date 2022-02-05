@@ -23,7 +23,14 @@ const ItemPendingAssessment = (props: any) => {
           <Button
             primary
             onClick={() => {
-              sendMail(props.client_id, props.assessmentType, props.version);
+              sendMail(
+                props.client_id,
+                props.assessmentType,
+                props.version,
+              ).then(() => {
+                window.alert("Mail sent successfully.");
+                window.location.reload();
+              });
             }}
             className="w-40 max-w-xs h-10"
           >
