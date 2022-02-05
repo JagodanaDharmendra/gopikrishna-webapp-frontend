@@ -1,5 +1,5 @@
 import { Formik, Form, FormikProps, Field } from "formik";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as Yup from "yup";
 import { API } from "../../../constant/Endpoints";
 import * as apiService from "../../../api-call";
@@ -37,11 +37,11 @@ function CreateClientForm(props: IProps) {
     therapy: [],
   });
 
-  function isClientNull() {
+  const isClientNull = useCallback(() => {
     return (
       client_id === undefined || client_id === null || client_id.length === 0
     );
-  }
+  }, [client_id]);
 
   useEffect(() => {
     async function loadData() {
@@ -68,7 +68,7 @@ function CreateClientForm(props: IProps) {
     }
 
     loadData();
-  }, [client_id]);
+  }, [client_id, isClientNull]);
 
   const formRef: React.MutableRefObject<FormikProps<ITypeClient>> =
     useRef<any>();

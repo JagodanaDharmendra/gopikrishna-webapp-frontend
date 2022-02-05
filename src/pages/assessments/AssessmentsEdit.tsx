@@ -1,5 +1,4 @@
 // eslint-disable-next-line react-hooks/exhaustive-deps
-import { Tab } from "@headlessui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 //
@@ -15,15 +14,11 @@ import {
   ISTFormValues,
 } from "./forms";
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
 const AssessmentsEdit: React.FC<any> = () => {
   let params = useParams();
   const client_id = params.client_id;
-  const assessmentType = params.assessmentType ?? "BT";
-  const version = params.version ?? 0;
+  const assessmentType: string = params.assessmentType ?? "BT";
+  const version: number = Number(params.version) ?? 0;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -119,7 +114,11 @@ const AssessmentsEdit: React.FC<any> = () => {
       }
 
       try {
-        const api = API.ENDPOINTS.FIND_ALL_ASSESSMENTS_FOR_CLIENT(client_id);
+        const api = API.ENDPOINTS.FIND_ASSESSMENTS_FOR_CLIENT(
+          client_id,
+          assessmentType,
+          version,
+        );
         const result = await apiService.getApi(api);
         // console.log(result.data.data);
         const data: Array<any> = result.data.data;
@@ -133,7 +132,7 @@ const AssessmentsEdit: React.FC<any> = () => {
     }
 
     loadData();
-  }, [clientAssessments, client_id, _updateForms]);
+  }, [clientAssessments, client_id, _updateForms, version, assessmentType]);
 
   const submitForm = async (values: any) => {
     // const id = toast.loading("Please wait...");
@@ -205,7 +204,7 @@ const AssessmentsEdit: React.FC<any> = () => {
     <div className="p-4">
       {error && <Label title={error} style={{ color: "#FF0000" }} />}
       <div className="flex flex-col">
-        {assessmentType == "BT" && (
+        {assessmentType === "BT" && (
           <>
             <Title title="BT Assessment" />
             {!clientAssessments?.includes("BT") && <NotEligible />}
@@ -225,7 +224,7 @@ const AssessmentsEdit: React.FC<any> = () => {
             )}
           </>
         )}
-        {assessmentType == "ST" && (
+        {assessmentType === "ST" && (
           <>
             <Title title="ST Assessment" />
             {!clientAssessments?.includes("ST") && <NotEligible />}
@@ -245,7 +244,7 @@ const AssessmentsEdit: React.FC<any> = () => {
             )}
           </>
         )}
-        {assessmentType == "OT" && (
+        {assessmentType === "OT" && (
           <>
             <Title title="OT Assessment" />
             {!clientAssessments?.includes("OT") && <NotEligible />}

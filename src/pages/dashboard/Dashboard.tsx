@@ -18,32 +18,32 @@ const Dashboard: React.FC<any> = () => {
     return !X.email_sent || X.draft;
   }
 
-  async function loadData() {
-    try {
-      const api = API.ENDPOINTS.FIND_ALL_ASSESSMENTS("");
-      const result = await apiService.getApi(api);
-      const data: Array<any> = result.data.data;
-      setStatistics({
-        bt: data.filter((X) => X.assessmentType === "BT" && isPending(X))
-          .length,
-        st: data.filter((X) => X.assessmentType === "ST" && isPending(X))
-          .length,
-        ot: data.filter((X) => X.assessmentType === "OT" && isPending(X))
-          .length,
-      });
-    } catch (error: any) {
-      setStatistics({
-        bt: 0,
-        st: 0,
-        ot: 0,
-      });
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
+    async function loadData() {
+      try {
+        const api = API.ENDPOINTS.FIND_ALL_ASSESSMENTS("");
+        const result = await apiService.getApi(api);
+        const data: Array<any> = result.data.data;
+        setStatistics({
+          bt: data.filter((X) => X.assessmentType === "BT" && isPending(X))
+            .length,
+          st: data.filter((X) => X.assessmentType === "ST" && isPending(X))
+            .length,
+          ot: data.filter((X) => X.assessmentType === "OT" && isPending(X))
+            .length,
+        });
+      } catch (error: any) {
+        setStatistics({
+          bt: 0,
+          st: 0,
+          ot: 0,
+        });
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
     loadData();
   }, []);
 
