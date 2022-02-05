@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ErrorMessage, useField } from "formik";
 //Components
 import { Label } from "..";
+import classNames from "classnames";
 
 interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -18,6 +19,7 @@ interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   labelClassName?: string;
   inputRef?: any;
   style?: React.CSSProperties;
+  disabled?: boolean;
   onFocus?(): void;
 }
 
@@ -34,6 +36,7 @@ const Input: React.FC<IProps> = (props: IProps & any) => {
     className,
     inputRef,
     required,
+    disabled = false,
     ...rest
   } = props;
   const [field] = useField(props);
@@ -67,11 +70,15 @@ const Input: React.FC<IProps> = (props: IProps & any) => {
         <input
           autoComplete="off"
           placeholder={placeholder}
-          className="w-full px-2 focus:border-0 focus:ring-0 active:border-0 active:ring-0 focus:outline-none active:outline-none bg-transparent border-0"
+          className={classNames(
+            "w-full px-2 focus:border-0 focus:ring-0 active:border-0 active:ring-0 focus:outline-none active:outline-none bg-transparent border-0",
+            disabled && "text-gray",
+          )}
           onFocus={set_focus}
           ref={inputRef}
           {...field}
           {...rest}
+          disabled={disabled}
           onBlur={set_blur}
         />
         {trailing && <div className="flex mx-2 my-auto">{trailing}</div>}
@@ -107,6 +114,7 @@ const Input: React.FC<IProps> = (props: IProps & any) => {
           className="w-full px-2 focus:border-0 focus:ring-0 active:border-0 active:ring-0 focus:outline-none"
           onFocus={set_focus}
           onBlur={set_blur}
+          disabled={disabled}
           {...rest}
         />
         {trailing && <div className="mx-2">{trailing}</div>}
