@@ -1,23 +1,18 @@
 import { Formik, FormikProps, Form } from "formik";
 import { useEffect, useRef } from "react";
 import * as Yup from "yup";
+import { ISTAssessment } from "..";
 import { Button, Input } from "../../../atoms";
 
-export interface IFormValues {
-  name: string;
-  family_history: string;
-  recommendations: string;
-}
-
 export interface IProps {
-  initialValues: IFormValues;
+  initialValues: ISTAssessment & any;
   onSubmit?: () => void;
   onSave?: () => void;
   onChange?: (key: string, value: string) => void;
 }
 
 const OTForm = (props: IProps) => {
-  const formRef: React.MutableRefObject<FormikProps<IFormValues>> =
+  const formRef: React.MutableRefObject<FormikProps<ISTAssessment & any>> =
     useRef<any>();
   const validate = Yup.object({
     name: Yup.string()
@@ -35,7 +30,7 @@ const OTForm = (props: IProps) => {
     props.onChange?.(e.target.name, e.target.value);
   }
 
-  const handleSubmit = async (values: IFormValues) => {};
+  const handleSubmit = async (values: ISTAssessment & any) => {};
 
   useEffect(() => {
     const { name, family_history, recommendations } = props.initialValues;
