@@ -1,18 +1,13 @@
 // eslint-disable-next-line react-hooks/exhaustive-deps
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { IBTAssessment, ISTAssessment, IOTAssessment } from ".";
 //
 import * as apiService from "../../api-call";
 import { Label } from "../../atoms";
 import { API } from "../../constant/Endpoints";
-import {
-  BTForm,
-  STForm,
-  OTForm,
-  IBTFormValues,
-  IOTFormValues,
-  ISTFormValues,
-} from "./forms";
+import { BTForm, STForm, OTForm } from "./forms";
+import { sendMail, viewAsPDF } from "./helpers";
 
 const AssessmentsEdit: React.FC<any> = () => {
   let params = useParams();
@@ -24,19 +19,27 @@ const AssessmentsEdit: React.FC<any> = () => {
 
   const [clientAssessments, setClientAssessments] = useState<Array<string>>([]);
 
-  const [BTFormValues, setBTFormValues] = useState<IBTFormValues & any>({
+  const [BTFormValues, setBTFormValues] = useState<IBTAssessment>({
+    therapist: "",
+    assessment_date: new Date(),
+    prenatal_history: "",
+    family_history: "",
+    development_history: "",
+    school_history: "",
+    tests_administered: "",
+    behavior_observation: "",
+    test_results: "",
+    impression: "",
+    recommendations: "",
+  });
+
+  const [STFormValues, setSTFormValues] = useState<ISTAssessment & any>({
     name: "",
     family_history: "",
     recommendations: "",
   });
 
-  const [STFormValues, setSTFormValues] = useState<ISTFormValues & any>({
-    name: "",
-    family_history: "",
-    recommendations: "",
-  });
-
-  const [OTFormValues, setOTFormValues] = useState<IOTFormValues & any>({
+  const [OTFormValues, setOTFormValues] = useState<IOTAssessment & any>({
     name: "",
     family_history: "",
     recommendations: "",
@@ -75,12 +78,6 @@ const AssessmentsEdit: React.FC<any> = () => {
     [clientAssessments],
   );
 
-  // function updateForms(data: Array<any>) {
-  //   updateBTForm(data.filter((X: any) => X.assessmentType === "BT"));
-  //   updateSTForm(data.filter((X: any) => X.assessmentType === "ST"));
-  //   updateOTForm(data.filter((X: any) => X.assessmentType === "OT"));
-  // }
-
   useEffect(() => {
     document.title = "AssessmentsEdit - Admin App";
   }, []);
@@ -112,7 +109,6 @@ const AssessmentsEdit: React.FC<any> = () => {
         setError("Client id not found");
         return;
       }
-
       try {
         const api = API.ENDPOINTS.FIND_ASSESSMENTS_FOR_CLIENT(
           client_id,
@@ -122,7 +118,7 @@ const AssessmentsEdit: React.FC<any> = () => {
         const result = await apiService.getApi(api);
         // console.log(result.data.data);
         const data: Array<any> = result.data.data;
-
+        console.log(data);
         _updateForms(data);
       } catch (error: any) {
         setError(error.message);
@@ -137,41 +133,62 @@ const AssessmentsEdit: React.FC<any> = () => {
   const submitForm = async (values: any) => {
     // const id = toast.loading("Please wait...");
     try {
-      const api = API.ENDPOINTS.CREATE_ASSESSMENT;
-      values = { ...values, client_id: client_id };
+      const api = API.ENDPOINTS.EDIT_ASSESSMENT;
+      values = { ...values, client_id, version };
       await apiService.postApi(api, values);
-    } catch (error: any) {}
+      window.alert("The assessment saved successfully.");
+      window.location.reload();
+    } catch (error: any) {
+      console.log(error.message || error);
+    }
+  };
+
+  const onSendMail = () => {
+    sendMail(String(client_id), String(assessmentType), Number(version)).then(
+      () => {
+        window.alert("Mail sent successfully.");
+        window.location.reload();
+      },
+    );
+  };
+
+  const onViewAsPDF = () => {
+    viewAsPDF(String(client_id), String(assessmentType), Number(version));
   };
 
   const submitBTForm = () => {
     console.log("Submitted BT Form");
     submitForm({
+      ...BTFormValues,
       assessmentType: "BT",
-      values: { ...BTFormValues, draft: false },
+      draft: false,
     });
   };
 
   const saveBTForm = () => {
     console.log("Saved BT Form");
     submitForm({
+      ...BTFormValues,
       assessmentType: "BT",
-      values: { ...BTFormValues, draft: true },
+      draft: true,
     });
   };
 
   const submitSTForm = () => {
     console.log("Submitted ST Form");
     submitForm({
+      ...STFormValues,
       assessmentType: "ST",
-      values: { ...STFormValues, draft: false },
+      draft: false,
     });
   };
 
   const saveSTForm = () => {
     console.log("Saved ST Form");
     submitForm({
+      ...STFormValues,
       assessmentType: "ST",
-      values: { ...STFormValues, draft: true },
+      draft: true,
     });
   };
 
@@ -180,15 +197,16 @@ const AssessmentsEdit: React.FC<any> = () => {
     submitForm({
       ...OTFormValues,
       assessmentType: "OT",
-      values: { ...OTFormValues, draft: false },
+      draft: false,
     });
   };
 
   const saveOTForm = () => {
     console.log("Saved OT Form");
     submitForm({
+      ...OTFormValues,
       assessmentType: "OT",
-      values: { ...OTFormValues, draft: true },
+      draft: true,
     });
   };
 
@@ -214,12 +232,10 @@ const AssessmentsEdit: React.FC<any> = () => {
                 onChange={(key: string, value: string) => {
                   setBTFormValues({ ...BTFormValues, [key]: value });
                 }}
-                onSubmit={() => {
-                  submitBTForm();
-                }}
-                onSave={() => {
-                  saveBTForm();
-                }}
+                onSubmit={submitBTForm}
+                onSave={saveBTForm}
+                onSendMail={onSendMail}
+                onViewAsPDF={onViewAsPDF}
               />
             )}
           </>
@@ -234,12 +250,10 @@ const AssessmentsEdit: React.FC<any> = () => {
                 onChange={(key: string, value: string) => {
                   setSTFormValues({ ...STFormValues, [key]: value });
                 }}
-                onSubmit={() => {
-                  submitSTForm();
-                }}
-                onSave={() => {
-                  saveSTForm();
-                }}
+                onSubmit={submitSTForm}
+                onSave={saveSTForm}
+                onSendMail={onSendMail}
+                onViewAsPDF={onViewAsPDF}
               />
             )}
           </>
@@ -254,12 +268,10 @@ const AssessmentsEdit: React.FC<any> = () => {
                 onChange={(key: string, value: string) => {
                   setOTFormValues({ ...OTFormValues, [key]: value });
                 }}
-                onSubmit={() => {
-                  submitOTForm();
-                }}
-                onSave={() => {
-                  saveOTForm();
-                }}
+                onSubmit={submitOTForm}
+                onSave={saveOTForm}
+                onSendMail={onSendMail}
+                onViewAsPDF={onViewAsPDF}
               />
             )}
           </>

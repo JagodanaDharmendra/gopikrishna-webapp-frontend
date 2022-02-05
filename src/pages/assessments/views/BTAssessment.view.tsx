@@ -1,24 +1,17 @@
 import { useEffect, useState } from "react";
 import {
+  IBTAssessment,
   ItemCompletedAssessment,
   ItemDraftAssessment,
   ItemPendingAssessment,
-} from "./items";
+} from "..";
 
 import { API } from "../../../constant/Endpoints";
 import * as apiService from "../../../api-call";
 import { Label } from "../../../atoms";
 
-interface IType {
-  name: string;
-  family_history: string;
-  recommendations: string;
-  draft: boolean;
-  email_sent: boolean;
-}
-
 const BTAssessment = () => {
-  const [assessments, setAssessments] = useState<Array<IType>>([]);
+  const [assessments, setAssessments] = useState<Array<IBTAssessment>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -66,7 +59,7 @@ const BTAssessment = () => {
         <div>
           {draftAssessments?.map((value, index) => {
             return (
-              <div key={`${value.name}_${index}`}>
+              <div key={`${value.client_id}_${index}`}>
                 <ItemDraftAssessment {...value} />
               </div>
             );
@@ -78,7 +71,7 @@ const BTAssessment = () => {
         <div>
           {pendingAssessments?.map((value, index) => {
             return (
-              <div key={`${value.name}_${index}`}>
+              <div key={`${value.client_id}_${index}`}>
                 <ItemPendingAssessment {...value} />
               </div>
             );
@@ -90,7 +83,7 @@ const BTAssessment = () => {
         <div>
           {completedAssessments?.map((value, index) => {
             return (
-              <div key={`${value.name}_${index}`}>
+              <div key={`${value.client_id}_${index}`}>
                 <ItemCompletedAssessment {...value} />
               </div>
             );

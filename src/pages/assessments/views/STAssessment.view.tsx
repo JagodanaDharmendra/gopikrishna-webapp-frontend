@@ -1,30 +1,23 @@
 import { useEffect, useState } from "react";
 import {
+  IOTAssessment,
   ItemCompletedAssessment,
   ItemDraftAssessment,
   ItemPendingAssessment,
-} from "./items";
+} from "..";
 
 import { API } from "../../../constant/Endpoints";
 import * as apiService from "../../../api-call";
 import { Label } from "../../../atoms";
 
-interface IType {
-  name: string;
-  family_history: string;
-  recommendations: string;
-  draft: boolean;
-  email_sent: boolean;
-}
-
-const OTAssessment = () => {
-  const [assessments, setAssessments] = useState<Array<IType>>([]);
+const STAssessment = () => {
+  const [assessments, setAssessments] = useState<Array<IOTAssessment>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   async function loadData() {
     try {
-      const api = API.ENDPOINTS.FIND_ALL_ASSESSMENTS("OT");
+      const api = API.ENDPOINTS.FIND_ALL_ASSESSMENTS("ST");
       const result = await apiService.getApi(api);
       console.log(result.data);
       const data = result.data.data;
@@ -59,14 +52,14 @@ const OTAssessment = () => {
 
   return (
     <>
-      <div>OT Assessments</div>
+      <div>ST Assessments</div>
       {error && <Label title={error} style={{ color: "#FF0000" }} />}
       <div>
         <div className="flex m-4 border-t-2">Draft Assessments</div>
         <div>
           {draftAssessments?.map((value, index) => {
             return (
-              <div key={`${value.name}_${index}`}>
+              <div key={`${value.client_id}_${index}`}>
                 <ItemDraftAssessment {...value} />
               </div>
             );
@@ -78,7 +71,7 @@ const OTAssessment = () => {
         <div>
           {pendingAssessments?.map((value, index) => {
             return (
-              <div key={`${value.name}_${index}`}>
+              <div key={`${value.client_id}_${index}`}>
                 <ItemPendingAssessment {...value} />
               </div>
             );
@@ -90,7 +83,7 @@ const OTAssessment = () => {
         <div>
           {completedAssessments?.map((value, index) => {
             return (
-              <div key={`${value.name}_${index}`}>
+              <div key={`${value.client_id}_${index}`}>
                 <ItemCompletedAssessment {...value} />
               </div>
             );
@@ -101,4 +94,4 @@ const OTAssessment = () => {
   );
 };
 
-export default OTAssessment;
+export default STAssessment;

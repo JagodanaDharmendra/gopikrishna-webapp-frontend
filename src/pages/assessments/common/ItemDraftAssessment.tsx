@@ -1,21 +1,24 @@
 import ButtonEditAssessment from "./ButtonEditAssessment";
 
-const ItemCompletedAssessment = (props: any) => {
+const ItemDraftAssessment = (props: any) => {
   return (
-    <div className="flex flex-col w-full shadow rounded bg-white border-2 border-green p-4">
+    <div className="flex flex-col overflow-hidden shadow rounded bg-white border-2 border-gray p-4">
       <div>
-        <div className="flex">Completed</div>
+        <div className="flex">Draft</div>
         <ButtonEditAssessment
           client_id={props.client_id}
           assessmentType={props.assessmentType}
+          version={props.version}
+          label="Edit"
         />
       </div>
-      <div className="flex flex-col">
+
+      <div className="flex-col">
         {Object.keys(props).map((key) => {
           if (props.hasOwnProperty(key)) {
             return (
               <div className="flex">
-                <h1>{`${key}-${props[key] ?? "null"}`}</h1>
+                <h1>{`${key} ${props[key]}`}</h1>
               </div>
             );
           }
@@ -26,4 +29,4 @@ const ItemCompletedAssessment = (props: any) => {
   );
 };
 
-export default ItemCompletedAssessment;
+export default ItemDraftAssessment;

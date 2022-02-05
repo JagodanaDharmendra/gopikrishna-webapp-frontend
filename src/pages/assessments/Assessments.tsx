@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Tab } from "@headlessui/react";
-import { BTAssessment, STAssessment, OTAssessment } from "./assessment";
+import { BTAssessment, STAssessment, OTAssessment } from ".";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
