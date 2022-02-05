@@ -22,6 +22,9 @@ interface ITypeClient {
     diagnosis: string;
     slot_time: Date;
     therapy: Array<"BT" | "ST" | "OT" | "PT" | "SE">;
+    bt?: number,
+    st?: number,
+    ot?: number
 }
 
 export default ITypeClient;
