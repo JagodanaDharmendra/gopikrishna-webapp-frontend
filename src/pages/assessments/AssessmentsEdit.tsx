@@ -19,22 +19,11 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const tabs = [
-  {
-    tabTitle: "BT Assessment",
-  },
-  {
-    tabTitle: "ST Assessment",
-  },
-  {
-    tabTitle: "OT Assessment",
-  },
-];
-
 const AssessmentsEdit: React.FC<any> = () => {
   let params = useParams();
   const client_id = params.client_id;
   const assessmentType = params.assessmentType ?? "BT";
+  const version = params.version ?? 0;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -205,95 +194,98 @@ const AssessmentsEdit: React.FC<any> = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex w-full h-96 justify-center text-center content-center items-center">
+        <h1 className="font-bold uppercase text-xl">Loading...</h1>
+      </div>
+    );
   }
 
   return (
     <div className="p-4">
       {error && <Label title={error} style={{ color: "#FF0000" }} />}
       <div className="flex flex-col">
-        <Tab.Group
-          defaultIndex={
-            assessmentType === "OT" ? 2 : assessmentType === "ST" ? 1 : 0
-          }
-          onChange={(index) => {
-            // console.log("Changed selected tab to:", index);
-          }}
-        >
-          <Tab.List className="flex space-x-3 w-full justify-around  p-1 bg-gray rounded-xl">
-            {tabs.map((value, index) => {
-              return (
-                <Tab
-                  key={`${index}-${value.tabTitle}`}
-                  className={({ selected }) =>
-                    classNames(
-                      "w-full py-2.5 text-sm leading-5 font-medium  rounded-lg",
-                      selected ? "bg-white shadow text-primary" : "text-white",
-                    )
-                  }
-                >
-                  {value.tabTitle}
-                </Tab>
-              );
-            })}
-          </Tab.List>
-          <Tab.Panels className="flex w-full mt-4">
-            <Tab.Panel>
-              {!clientAssessments?.includes("BT") && <h1>Not eligible</h1>}
-              {clientAssessments?.includes("BT") && (
-                <BTForm
-                  initialValues={BTFormValues}
-                  onChange={(key: string, value: string) => {
-                    setBTFormValues({ ...BTFormValues, [key]: value });
-                  }}
-                  onSubmit={() => {
-                    submitBTForm();
-                  }}
-                  onSave={() => {
-                    saveBTForm();
-                  }}
-                />
-              )}
-            </Tab.Panel>
-            <Tab.Panel>
-              {!clientAssessments?.includes("ST") && <h1>Not eligible</h1>}
-              {clientAssessments?.includes("ST") && (
-                <STForm
-                  initialValues={STFormValues}
-                  onChange={(key: string, value: string) => {
-                    setSTFormValues({ ...STFormValues, [key]: value });
-                  }}
-                  onSubmit={() => {
-                    submitSTForm();
-                  }}
-                  onSave={() => {
-                    saveSTForm();
-                  }}
-                />
-              )}
-            </Tab.Panel>
-            <Tab.Panel>
-              {!clientAssessments?.includes("OT") && <h1>Not eligible</h1>}
-              {clientAssessments?.includes("OT") && (
-                <OTForm
-                  initialValues={OTFormValues}
-                  onChange={(key: string, value: string) => {
-                    setOTFormValues({ ...OTFormValues, [key]: value });
-                  }}
-                  onSubmit={() => {
-                    submitOTForm();
-                  }}
-                  onSave={() => {
-                    saveOTForm();
-                  }}
-                />
-              )}
-            </Tab.Panel>
-          </Tab.Panels>
-        </Tab.Group>
+        {assessmentType == "BT" && (
+          <>
+            <Title title="BT Assessment" />
+            {!clientAssessments?.includes("BT") && <NotEligible />}
+            {clientAssessments?.includes("BT") && (
+              <BTForm
+                initialValues={BTFormValues}
+                onChange={(key: string, value: string) => {
+                  setBTFormValues({ ...BTFormValues, [key]: value });
+                }}
+                onSubmit={() => {
+                  submitBTForm();
+                }}
+                onSave={() => {
+                  saveBTForm();
+                }}
+              />
+            )}
+          </>
+        )}
+        {assessmentType == "ST" && (
+          <>
+            <Title title="ST Assessment" />
+            {!clientAssessments?.includes("ST") && <NotEligible />}
+            {clientAssessments?.includes("ST") && (
+              <STForm
+                initialValues={STFormValues}
+                onChange={(key: string, value: string) => {
+                  setSTFormValues({ ...STFormValues, [key]: value });
+                }}
+                onSubmit={() => {
+                  submitSTForm();
+                }}
+                onSave={() => {
+                  saveSTForm();
+                }}
+              />
+            )}
+          </>
+        )}
+        {assessmentType == "OT" && (
+          <>
+            <Title title="OT Assessment" />
+            {!clientAssessments?.includes("OT") && <NotEligible />}
+            {clientAssessments?.includes("OT") && (
+              <OTForm
+                initialValues={OTFormValues}
+                onChange={(key: string, value: string) => {
+                  setOTFormValues({ ...OTFormValues, [key]: value });
+                }}
+                onSubmit={() => {
+                  submitOTForm();
+                }}
+                onSave={() => {
+                  saveOTForm();
+                }}
+              />
+            )}
+          </>
+        )}
       </div>
     </div>
   );
 };
+
+function Title({ title }: any) {
+  return (
+    <h1 className="flex w-full justify-center text-center font-bold text-primary uppercase text-xl">
+      {title}
+    </h1>
+  );
+}
+
+function NotEligible() {
+  return (
+    <div className="flex w-full h-96 justify-center text-center content-center items-center">
+      <h1 className="font-bold text-orange uppercase text-xl">
+        Not eligible for this category
+      </h1>
+    </div>
+  );
+}
 
 export default AssessmentsEdit;
