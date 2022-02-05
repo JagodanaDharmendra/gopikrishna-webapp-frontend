@@ -45,6 +45,7 @@ export default function Search(props: IProps) {
                 disabled={!formikProps.values.query}
                 primary
                 shadow
+                className="w-32"
               >
                 Submit
               </Button>
@@ -57,6 +58,7 @@ export default function Search(props: IProps) {
                 }}
                 secondary
                 shadow
+                className="w-32"
               >
                 Reset
               </Button>

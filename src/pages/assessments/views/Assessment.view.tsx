@@ -8,6 +8,7 @@ import {
 import { API } from "../../../constant/Endpoints";
 import * as apiService from "../../../api-call";
 import { Label } from "../../../atoms";
+import { Search } from "../../../molecules";
 
 interface IProps {
   assessmentType: "BT" | "ST" | "OT";
@@ -17,6 +18,7 @@ const Assessment = (props: IProps) => {
   const [assessments, setAssessments] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   async function loadData() {
     try {
@@ -40,15 +42,32 @@ const Assessment = (props: IProps) => {
     return <div>Loading...</div>;
   }
 
-  if (!assessments || assessments.length === 0) {
-    return <div>No Assessments found</div>;
-  }
+  const filteredAssessments =
+    assessments &&
+    assessments.filter((value: any) => {
+      if (!searchQuery || searchQuery.length <= 0) {
+        return true;
+      }
+      if (
+        searchQuery &&
+        searchQuery.length > 0 &&
+        (value.therapist.includes(searchQuery) ||
+          value.client_id === searchQuery ||
+          value.version === parseInt(searchQuery) ||
+          value.modified_by === searchQuery)
+      ) {
+        return true;
+      }
+      return false;
+    });
 
-  const draftAssessments = assessments.filter((X) => X.draft && !X.email_sent);
-  const pendingAssessments = assessments.filter(
+  const draftAssessments = filteredAssessments.filter(
+    (X) => X.draft && !X.email_sent,
+  );
+  const pendingAssessments = filteredAssessments.filter(
     (X) => !X.draft && !X.email_sent,
   );
-  const completedAssessments = assessments.filter(
+  const completedAssessments = filteredAssessments.filter(
     (X) => X.email_sent && !X.draft,
   );
 
@@ -83,6 +102,17 @@ const Assessment = (props: IProps) => {
 
   return (
     <div className="flex w-full flex-col">
+      <div className="flex my-3">
+        <Search
+          onSearch={(query) => {
+            setSearchQuery(query);
+          }}
+          onClear={() => {
+            setSearchQuery("");
+          }}
+        />
+      </div>
+
       {error && <Label title={error} style={{ color: "#FF0000" }} />}
       <>
         <PanelTitle title="Draft Assessments" />
