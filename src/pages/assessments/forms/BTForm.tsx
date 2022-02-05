@@ -11,7 +11,7 @@ export interface IProps {
   onSave: () => void;
   onSendMail: () => void;
   onViewAsPDF: () => void;
-  onChange?: (key: string, value: string) => void;
+  onChange: (key: string, value: string) => void;
 }
 
 const BTForm = (props: IProps) => {
@@ -33,10 +33,8 @@ const BTForm = (props: IProps) => {
   });
 
   function handleChange(e: any) {
-    props.onChange?.(e.target.name, e.target.value);
+    props.onChange(e.target.name, e.target.value);
   }
-
-  const handleSubmit = async (values: IBTAssessment) => {};
 
   useEffect(() => {
     const {
@@ -69,7 +67,7 @@ const BTForm = (props: IProps) => {
   }, [props.initialValues]);
 
   const IsCompleted = props.initialValues.email_sent;
-  const IsDraft = props.initialValues.draft;
+  const IsDraft = props.initialValues.draft && !IsCompleted;
   const IsPending = !IsDraft && !IsCompleted;
   const disabled = !IsDraft;
 
@@ -78,7 +76,7 @@ const BTForm = (props: IProps) => {
       <BackButton />
       <Formik
         initialValues={props.initialValues}
-        onSubmit={handleSubmit}
+        onSubmit={() => {}}
         innerRef={formRef}
         validationSchema={validate}
       >
@@ -186,8 +184,16 @@ const BTForm = (props: IProps) => {
             IsCompleted={IsCompleted}
             onSendMail={props.onSendMail}
             onViewAsPDF={props.onViewAsPDF}
-            onSubmit={props.onSubmit}
-            onSave={props.onSave}
+            onSubmit={() => {
+              if (formRef.current.isValid) {
+                props.onSubmit();
+              }
+            }}
+            onSave={() => {
+              if (formRef.current.isValid) {
+                props.onSave();
+              }
+            }}
           />
         </Form>
       </Formik>
