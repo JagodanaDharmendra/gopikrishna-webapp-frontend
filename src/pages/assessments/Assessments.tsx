@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Tab } from "@headlessui/react";
-import { BTAssessment, STAssessment, OTAssessment } from ".";
+import { Assessment } from ".";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -10,19 +10,19 @@ const tabs = [
   {
     tabTitle: "BT Assessment",
     view: () => {
-      return <BTAssessment />;
+      return <Assessment assessmentType="BT" />;
     },
   },
   {
     tabTitle: "ST Assessment",
     view: () => {
-      return <STAssessment />;
+      return <Assessment assessmentType="ST" />;
     },
   },
   {
     tabTitle: "OT Assessment",
     view: () => {
-      return <OTAssessment />;
+      return <Assessment assessmentType="OT" />;
     },
   },
 ];
