@@ -4,10 +4,10 @@ interface IProps {
   IsDraft: boolean | undefined;
   IsPending: boolean | undefined;
   IsCompleted: boolean | undefined;
-  onSendMail?: () => void;
-  onViewAsPDF?: () => void;
-  onSubmit?: () => void;
-  onSave?: () => void;
+  onSendMail: () => void;
+  onViewAsPDF: () => void;
+  onSubmit: () => void;
+  onSave: () => void;
 }
 
 function ActionButtons(props: IProps) {

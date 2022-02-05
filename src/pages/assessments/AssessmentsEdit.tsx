@@ -159,8 +159,8 @@ const AssessmentsEdit: React.FC<any> = () => {
   const submitBTForm = () => {
     console.log("Submitted BT Form");
     submitForm({
-      assessmentType: "BT",
       ...BTFormValues,
+      assessmentType: "BT",
       draft: false,
     });
   };
@@ -168,8 +168,8 @@ const AssessmentsEdit: React.FC<any> = () => {
   const saveBTForm = () => {
     console.log("Saved BT Form");
     submitForm({
-      assessmentType: "BT",
       ...BTFormValues,
+      assessmentType: "BT",
       draft: true,
     });
   };
@@ -177,8 +177,8 @@ const AssessmentsEdit: React.FC<any> = () => {
   const submitSTForm = () => {
     console.log("Submitted ST Form");
     submitForm({
-      assessmentType: "ST",
       ...STFormValues,
+      assessmentType: "ST",
       draft: false,
     });
   };
@@ -186,8 +186,8 @@ const AssessmentsEdit: React.FC<any> = () => {
   const saveSTForm = () => {
     console.log("Saved ST Form");
     submitForm({
-      assessmentType: "ST",
       ...STFormValues,
+      assessmentType: "ST",
       draft: true,
     });
   };
@@ -197,7 +197,6 @@ const AssessmentsEdit: React.FC<any> = () => {
     submitForm({
       ...OTFormValues,
       assessmentType: "OT",
-      ...OTFormValues,
       draft: false,
     });
   };
@@ -205,8 +204,8 @@ const AssessmentsEdit: React.FC<any> = () => {
   const saveOTForm = () => {
     console.log("Saved OT Form");
     submitForm({
-      assessmentType: "OT",
       ...OTFormValues,
+      assessmentType: "OT",
       draft: true,
     });
   };
