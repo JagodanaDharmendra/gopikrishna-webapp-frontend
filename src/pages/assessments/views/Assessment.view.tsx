@@ -20,23 +20,23 @@ const Assessment = (props: IProps) => {
   const [error, setError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  async function loadData() {
-    try {
-      const api = API.ENDPOINTS.FIND_ALL_ASSESSMENTS(props.assessmentType);
-      const result = await apiService.getApi(api);
-      const data = result.data.data;
-      setAssessments(data);
-    } catch (error: any) {
-      setAssessments([]);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
+    async function loadData() {
+      try {
+        const api = API.ENDPOINTS.FIND_ALL_ASSESSMENTS(props.assessmentType);
+        const result = await apiService.getApi(api);
+        const data = result.data.data;
+        setAssessments(data);
+      } catch (error: any) {
+        setAssessments([]);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
     loadData();
-  }, []);
+  }, [props.assessmentType]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -84,7 +84,7 @@ const Assessment = (props: IProps) => {
   function PanelDescription({ dataList, Children }: any) {
     return (
       <>
-        {(!dataList || dataList.length == 0) && (
+        {(!dataList || dataList.length === 0) && (
           <div className="flex h-12 content-center justify-center items-center">
             <div>No data found</div>
           </div>
