@@ -1,18 +1,12 @@
 // eslint-disable-next-line react-hooks/exhaustive-deps
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { IBTAssessment, ISTAssessment, IOTAssessment } from ".";
 //
 import * as apiService from "../../api-call";
 import { Label } from "../../atoms";
 import { API } from "../../constant/Endpoints";
-import {
-  BTForm,
-  STForm,
-  OTForm,
-  IBTFormValues,
-  IOTFormValues,
-  ISTFormValues,
-} from "./forms";
+import { BTForm, STForm, OTForm } from "./forms";
 
 const AssessmentsEdit: React.FC<any> = () => {
   let params = useParams();
@@ -24,19 +18,27 @@ const AssessmentsEdit: React.FC<any> = () => {
 
   const [clientAssessments, setClientAssessments] = useState<Array<string>>([]);
 
-  const [BTFormValues, setBTFormValues] = useState<IBTFormValues & any>({
+  const [BTFormValues, setBTFormValues] = useState<IBTAssessment>({
+    therapist: "",
+    assessment_date: new Date(),
+    prenatal_history: "",
+    family_history: "",
+    development_history: "",
+    school_history: "",
+    tests_administered: "",
+    behavior_observation: "",
+    test_results: "",
+    impression: "",
+    recommendations: "",
+  });
+
+  const [STFormValues, setSTFormValues] = useState<ISTAssessment & any>({
     name: "",
     family_history: "",
     recommendations: "",
   });
 
-  const [STFormValues, setSTFormValues] = useState<ISTFormValues & any>({
-    name: "",
-    family_history: "",
-    recommendations: "",
-  });
-
-  const [OTFormValues, setOTFormValues] = useState<IOTFormValues & any>({
+  const [OTFormValues, setOTFormValues] = useState<IOTAssessment & any>({
     name: "",
     family_history: "",
     recommendations: "",
@@ -75,12 +77,6 @@ const AssessmentsEdit: React.FC<any> = () => {
     [clientAssessments],
   );
 
-  // function updateForms(data: Array<any>) {
-  //   updateBTForm(data.filter((X: any) => X.assessmentType === "BT"));
-  //   updateSTForm(data.filter((X: any) => X.assessmentType === "ST"));
-  //   updateOTForm(data.filter((X: any) => X.assessmentType === "OT"));
-  // }
-
   useEffect(() => {
     document.title = "AssessmentsEdit - Admin App";
   }, []);
@@ -112,7 +108,6 @@ const AssessmentsEdit: React.FC<any> = () => {
         setError("Client id not found");
         return;
       }
-
       try {
         const api = API.ENDPOINTS.FIND_ASSESSMENTS_FOR_CLIENT(
           client_id,
@@ -122,7 +117,7 @@ const AssessmentsEdit: React.FC<any> = () => {
         const result = await apiService.getApi(api);
         // console.log(result.data.data);
         const data: Array<any> = result.data.data;
-
+        console.log(data);
         _updateForms(data);
       } catch (error: any) {
         setError(error.message);
@@ -137,17 +132,22 @@ const AssessmentsEdit: React.FC<any> = () => {
   const submitForm = async (values: any) => {
     // const id = toast.loading("Please wait...");
     try {
-      const api = API.ENDPOINTS.CREATE_ASSESSMENT;
-      values = { ...values, client_id: client_id };
+      const api = API.ENDPOINTS.EDIT_ASSESSMENT;
+      values = { ...values, client_id, version };
       await apiService.postApi(api, values);
-    } catch (error: any) {}
+      window.alert("The assessment saved successfully.");
+      window.location.reload();
+    } catch (error: any) {
+      console.log(error.message || error);
+    }
   };
 
   const submitBTForm = () => {
     console.log("Submitted BT Form");
     submitForm({
       assessmentType: "BT",
-      values: { ...BTFormValues, draft: false },
+      ...BTFormValues,
+      draft: false,
     });
   };
 
@@ -155,7 +155,8 @@ const AssessmentsEdit: React.FC<any> = () => {
     console.log("Saved BT Form");
     submitForm({
       assessmentType: "BT",
-      values: { ...BTFormValues, draft: true },
+      ...BTFormValues,
+      draft: true,
     });
   };
 
@@ -163,7 +164,8 @@ const AssessmentsEdit: React.FC<any> = () => {
     console.log("Submitted ST Form");
     submitForm({
       assessmentType: "ST",
-      values: { ...STFormValues, draft: false },
+      ...STFormValues,
+      draft: false,
     });
   };
 
@@ -171,7 +173,8 @@ const AssessmentsEdit: React.FC<any> = () => {
     console.log("Saved ST Form");
     submitForm({
       assessmentType: "ST",
-      values: { ...STFormValues, draft: true },
+      ...STFormValues,
+      draft: true,
     });
   };
 
@@ -180,7 +183,8 @@ const AssessmentsEdit: React.FC<any> = () => {
     submitForm({
       ...OTFormValues,
       assessmentType: "OT",
-      values: { ...OTFormValues, draft: false },
+      ...OTFormValues,
+      draft: false,
     });
   };
 
@@ -188,7 +192,8 @@ const AssessmentsEdit: React.FC<any> = () => {
     console.log("Saved OT Form");
     submitForm({
       assessmentType: "OT",
-      values: { ...OTFormValues, draft: true },
+      ...OTFormValues,
+      draft: true,
     });
   };
 
