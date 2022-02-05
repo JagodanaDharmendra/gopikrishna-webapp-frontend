@@ -1,6 +1,6 @@
 interface ISTAssessment {
-    assessmentType: "ST",
-    client_id: string,
+    assessmentType?: "ST",
+    client_id?: string,
     therapist: string,
     assessment_date: string,
     daddling: string,
@@ -28,13 +28,13 @@ interface ISTAssessment {
     reels_el_score: string,
     provisional_diagnosis: string,
     recommendations: string,
-    created_on: string,
-    created_by: string,
-    modified_on: string,
-    modified_by: string,
-    email_sent: boolean,
-    version: number,
-    draft: boolean,
+    created_on?: string,
+    created_by?: string,
+    modified_on?: string,
+    modified_by?: string,
+    email_sent?: boolean,
+    version?: number,
+    draft?: boolean,
 }
 
 export default ISTAssessment;
