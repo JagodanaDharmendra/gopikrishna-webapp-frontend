@@ -2,14 +2,16 @@ import { Formik, FormikProps, Form } from "formik";
 import { useEffect, useRef } from "react";
 import { Location, useLocation, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { ActionButtons } from ".";
 import { IBTAssessment } from "..";
 import { Button, Input } from "../../../atoms";
-import { sendMail, viewAsPDF } from "../helpers";
 
 export interface IProps {
   initialValues: IBTAssessment;
-  onSubmit?: () => void;
-  onSave?: () => void;
+  onSubmit: () => void;
+  onSave: () => void;
+  onSendMail: () => void;
+  onViewAsPDF: () => void;
   onChange?: (key: string, value: string) => void;
 }
 
@@ -207,65 +209,15 @@ const BTForm = (props: IProps) => {
             disabled={disabled}
           />
 
-          {/* //Pending */}
-          {(IsPending || IsCompleted) && (
-            <div className="lg:col-span-2 space-x-4 mx-auto flex justify-center">
-              {!IsCompleted && (
-                <Button
-                  onClick={() => {
-                    sendMail(
-                      String(props.initialValues.client_id),
-                      String(props.initialValues.assessmentType),
-                      Number(props.initialValues.version),
-                    ).then(() => {
-                      window.alert("Mail sent successfully.");
-                      window.location.reload();
-                    });
-                  }}
-                  className="mt-2 py-2 px-12 shadow-lg"
-                  children="Send Mail"
-                  primary
-                  shadow
-                />
-              )}
-              <Button
-                onClick={() => {
-                  viewAsPDF(
-                    String(props.initialValues.client_id),
-                    String(props.initialValues.assessmentType),
-                    Number(props.initialValues.version),
-                  );
-                }}
-                className="mt-2 py-2 px-12 shadow-lg"
-                children="View As PDF"
-                primary
-                shadow
-              />
-            </div>
-          )}
-          {/* //Draft */}
-          {IsDraft && !IsPending && !IsCompleted && (
-            <div className="lg:col-span-2 space-x-4 mx-auto flex justify-center">
-              <Button
-                onClick={() => {
-                  props.onSave?.();
-                }}
-                className="mt-2 py-2 px-12 shadow-lg"
-                children="Save Draft"
-                primary
-                shadow
-              />
-              <Button
-                onClick={() => {
-                  props.onSubmit?.();
-                }}
-                className="mt-2 py-2 px-12 shadow-lg"
-                children="Submit"
-                primary
-                shadow
-              />
-            </div>
-          )}
+          <ActionButtons
+            IsDraft={IsDraft}
+            IsPending={IsPending}
+            IsCompleted={IsCompleted}
+            onSendMail={props.onSendMail}
+            onViewAsPDF={props.onViewAsPDF}
+            onSubmit={props.onSubmit}
+            onSave={props.onSave}
+          />
         </Form>
       </Formik>
     </>

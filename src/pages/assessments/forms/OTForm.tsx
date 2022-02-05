@@ -1,13 +1,16 @@
 import { Formik, FormikProps, Form } from "formik";
 import { useEffect, useRef } from "react";
 import * as Yup from "yup";
+import { ActionButtons } from ".";
 import { ISTAssessment } from "..";
-import { Button, Input } from "../../../atoms";
+import { Input } from "../../../atoms";
 
 export interface IProps {
   initialValues: ISTAssessment & any;
-  onSubmit?: () => void;
-  onSave?: () => void;
+  onSubmit: () => void;
+  onSave: () => void;
+  onSendMail: () => void;
+  onViewAsPDF: () => void;
   onChange?: (key: string, value: string) => void;
 }
 
@@ -42,6 +45,11 @@ const OTForm = (props: IProps) => {
     });
   }, [props.initialValues]);
 
+  const IsCompleted = props.initialValues.email_sent;
+  const IsDraft = props.initialValues.draft;
+  const IsPending = !IsDraft && !IsCompleted;
+  const disabled = !IsDraft;
+
   return (
     <>
       <Formik
@@ -64,29 +72,15 @@ const OTForm = (props: IProps) => {
             onChange={handleChange}
             required
           />
-          <div className="lg:col-span-2 space-x-4 mx-auto flex justify-center">
-            <Button
-              onClick={() => {
-                console.log(formRef.current.values);
-                props.onSave?.();
-              }}
-              className="mt-2 py-2 px-12 shadow-lg"
-              children="Save"
-              primary
-              shadow
-            />
-
-            <Button
-              onClick={() => {
-                console.log(formRef.current.values);
-                props.onSubmit?.();
-              }}
-              className="mt-2 py-2 px-12 shadow-lg"
-              children="Submit"
-              primary
-              shadow
-            />
-          </div>
+          <ActionButtons
+            IsDraft={IsDraft}
+            IsPending={IsPending}
+            IsCompleted={IsCompleted}
+            onSendMail={props.onSendMail}
+            onViewAsPDF={props.onViewAsPDF}
+            onSubmit={props.onSubmit}
+            onSave={props.onSave}
+          />
         </Form>
       </Formik>
     </>

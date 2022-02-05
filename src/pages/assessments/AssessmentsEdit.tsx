@@ -7,6 +7,7 @@ import * as apiService from "../../api-call";
 import { Label } from "../../atoms";
 import { API } from "../../constant/Endpoints";
 import { BTForm, STForm, OTForm } from "./forms";
+import { sendMail, viewAsPDF } from "./helpers";
 
 const AssessmentsEdit: React.FC<any> = () => {
   let params = useParams();
@@ -142,6 +143,19 @@ const AssessmentsEdit: React.FC<any> = () => {
     }
   };
 
+  const onSendMail = () => {
+    sendMail(String(client_id), String(assessmentType), Number(version)).then(
+      () => {
+        window.alert("Mail sent successfully.");
+        window.location.reload();
+      },
+    );
+  };
+
+  const onViewAsPDF = () => {
+    viewAsPDF(String(client_id), String(assessmentType), Number(version));
+  };
+
   const submitBTForm = () => {
     console.log("Submitted BT Form");
     submitForm({
@@ -219,12 +233,10 @@ const AssessmentsEdit: React.FC<any> = () => {
                 onChange={(key: string, value: string) => {
                   setBTFormValues({ ...BTFormValues, [key]: value });
                 }}
-                onSubmit={() => {
-                  submitBTForm();
-                }}
-                onSave={() => {
-                  saveBTForm();
-                }}
+                onSubmit={submitBTForm}
+                onSave={saveBTForm}
+                onSendMail={onSendMail}
+                onViewAsPDF={onViewAsPDF}
               />
             )}
           </>
@@ -239,12 +251,10 @@ const AssessmentsEdit: React.FC<any> = () => {
                 onChange={(key: string, value: string) => {
                   setSTFormValues({ ...STFormValues, [key]: value });
                 }}
-                onSubmit={() => {
-                  submitSTForm();
-                }}
-                onSave={() => {
-                  saveSTForm();
-                }}
+                onSubmit={submitSTForm}
+                onSave={saveSTForm}
+                onSendMail={onSendMail}
+                onViewAsPDF={onViewAsPDF}
               />
             )}
           </>
@@ -259,12 +269,10 @@ const AssessmentsEdit: React.FC<any> = () => {
                 onChange={(key: string, value: string) => {
                   setOTFormValues({ ...OTFormValues, [key]: value });
                 }}
-                onSubmit={() => {
-                  submitOTForm();
-                }}
-                onSave={() => {
-                  saveOTForm();
-                }}
+                onSubmit={submitOTForm}
+                onSave={saveOTForm}
+                onSendMail={onSendMail}
+                onViewAsPDF={onViewAsPDF}
               />
             )}
           </>
