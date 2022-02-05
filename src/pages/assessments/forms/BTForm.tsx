@@ -1,10 +1,9 @@
 import { Formik, FormikProps, Form } from "formik";
 import { useEffect, useRef } from "react";
-import { Location, useLocation, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { ActionButtons } from ".";
+import { ActionButtons, BackButton } from ".";
 import { IBTAssessment } from "..";
-import { Button, Input } from "../../../atoms";
+import { Input } from "../../../atoms";
 
 export interface IProps {
   initialValues: IBTAssessment;
@@ -16,11 +15,6 @@ export interface IProps {
 }
 
 const BTForm = (props: IProps) => {
-  const navigate = useNavigate();
-  let location: Location = useLocation();
-  const state: any = location.state;
-  let from = state?.from?.pathname || "/dashboard/assessments";
-
   const formRef: React.MutableRefObject<FormikProps<IBTAssessment>> =
     useRef<any>();
 
@@ -81,19 +75,7 @@ const BTForm = (props: IProps) => {
 
   return (
     <>
-      {/* GO Back Button */}
-      <div className="lg:col-span-2 space-x-4  flex justify-left">
-        <Button
-          onClick={() => {
-            navigate(from, { replace: true });
-          }}
-          className="mt-2 py-2 px-12 shadow-lg"
-          children="Go Back"
-          primary
-          shadow
-        />
-      </div>
-
+      <BackButton />
       <Formik
         initialValues={props.initialValues}
         onSubmit={handleSubmit}
@@ -124,7 +106,6 @@ const BTForm = (props: IProps) => {
             label="Therapist"
             onChange={handleChange}
             required
-            value={props.initialValues.therapist}
             disabled={disabled}
           />
           <Input
@@ -132,7 +113,6 @@ const BTForm = (props: IProps) => {
             label="Assessment Date"
             onChange={handleChange}
             required
-            // value={props.initialValues.assessment_date}
             type="date"
             disabled={disabled}
           />
@@ -141,7 +121,6 @@ const BTForm = (props: IProps) => {
             label="Prenatal History"
             onChange={handleChange}
             required
-            value={props.initialValues.prenatal_history}
             disabled={disabled}
           />
           <Input
@@ -149,7 +128,6 @@ const BTForm = (props: IProps) => {
             label="Family History"
             onChange={handleChange}
             required
-            value={props.initialValues.family_history}
             disabled={disabled}
           />
           <Input
@@ -157,7 +135,6 @@ const BTForm = (props: IProps) => {
             label="Development History"
             onChange={handleChange}
             required
-            value={props.initialValues.development_history}
             disabled={disabled}
           />
           <Input
@@ -165,7 +142,6 @@ const BTForm = (props: IProps) => {
             label="School History"
             onChange={handleChange}
             required
-            value={props.initialValues.school_history}
             disabled={disabled}
           />
           <Input
@@ -173,7 +149,6 @@ const BTForm = (props: IProps) => {
             label="Tests Administered"
             onChange={handleChange}
             required
-            value={props.initialValues.tests_administered}
             disabled={disabled}
           />
           <Input
@@ -181,7 +156,6 @@ const BTForm = (props: IProps) => {
             label="Behavior Observation"
             onChange={handleChange}
             required
-            value={props.initialValues.behavior_observation}
             disabled={disabled}
           />
           <Input
@@ -189,7 +163,6 @@ const BTForm = (props: IProps) => {
             label="Test Results"
             onChange={handleChange}
             required
-            value={props.initialValues.test_results}
             disabled={disabled}
           />
           <Input
@@ -197,7 +170,6 @@ const BTForm = (props: IProps) => {
             label="Impression"
             onChange={handleChange}
             required
-            value={props.initialValues.impression}
             disabled={disabled}
           />
           <Input
@@ -205,7 +177,6 @@ const BTForm = (props: IProps) => {
             label="Recommendations"
             onChange={handleChange}
             required
-            value={props.initialValues.recommendations}
             disabled={disabled}
           />
 
