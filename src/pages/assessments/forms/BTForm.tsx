@@ -50,7 +50,6 @@ const BTForm = (props: IProps) => {
 
   return (
     <>
-      <div>BT Assessments</div>
       <Formik
         initialValues={props.initialValues}
         onSubmit={handleSubmit}

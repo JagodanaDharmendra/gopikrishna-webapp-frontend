@@ -49,7 +49,6 @@ const STForm = (props: IProps) => {
 
   return (
     <>
-      <div>ST Assessments</div>
       <Formik
         initialValues={props.initialValues}
         onSubmit={handleSubmit}
