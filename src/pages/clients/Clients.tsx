@@ -1,27 +1,24 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Tab } from "@headlessui/react";
-import { CreateClientForm, ClientsList } from "./views";
-
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
+import { CreateClientForm, ClientsList } from "./components";
+import classNames from "classnames";
 
 const tabs = [
-  {
-    tabTitle: "All Clients",
-    view: () => {
-      return <ClientsList />;
-    },
-  },
   {
     tabTitle: "Create Client",
     view: () => {
       return <CreateClientForm />;
     },
   },
+  {
+    tabTitle: "All Clients",
+    view: () => {
+      return <ClientsList />;
+    },
+  },
 ];
 
-const Clients: React.FC<any> = () => {
+function Clients() {
   useEffect(() => {
     document.title = "Clients - Admin App";
   }, []);
@@ -56,7 +53,14 @@ const Clients: React.FC<any> = () => {
             </Tab.List>
             <Tab.Panels className="flex w-full mt-4">
               {tabs.map((value, index) => {
-                return <Tab.Panel>{value.view()}</Tab.Panel>;
+                return (
+                  <Tab.Panel
+                    key={`${index}-${value.tabTitle}`}
+                    className="flex w-full mt-4"
+                  >
+                    {value.view()}
+                  </Tab.Panel>
+                );
               })}
             </Tab.Panels>
           </Tab.Group>
@@ -64,6 +68,6 @@ const Clients: React.FC<any> = () => {
       </div>
     </>
   );
-};
+}
 
 export default Clients;

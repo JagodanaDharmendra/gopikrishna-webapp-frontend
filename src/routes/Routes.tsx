@@ -37,20 +37,21 @@ export default function AppRoutes() {
             <Route path="clients" element={<Clients />} />
             <Route path="clients/edit/:client_id" element={<ClientsEdit />} />
             <Route path="assessments" element={<Assessments />} />
-            <Route path="assessment/:client_id">
-              <Route path=":assessmentType" element={<AssessmentsEdit />} />
-              <Route path="" element={<AssessmentsEdit />} />
-            </Route>
-            <Route path="users" element={<Users />} />
             <Route
-              path="*"
-              element={
-                <main style={{ padding: "1rem" }}>
-                  <p>There's nothing here!</p>
-                </main>
-              }
+              path="assessment/:client_id/:assessmentType/:version"
+              element={<AssessmentsEdit />}
             />
+            <Route path="users" element={<Users />} />
           </Route>
+
+          <Route
+            path="*"
+            element={
+              <main style={{ padding: "1rem" }}>
+                <p>There's nothing here!</p>
+              </main>
+            }
+          />
         </Route>
       </Routes>
     </AuthProvider>

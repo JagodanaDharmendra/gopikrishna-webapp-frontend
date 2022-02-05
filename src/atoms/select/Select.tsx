@@ -76,7 +76,7 @@ const Select: React.FC<IProps> = (props: IProps) => {
             ? focused
               ? "border-primary hover:border-primary focus:border-primary"
               : "border-gray"
-            : "text-sm font-medium opacity-80 ring-0 hover:ring-0 focus:ring-0 outline-none hover:outline-none focus:outline-none border-0 hover:border-0 focus:border-0 text-midGray"
+            : "text-sm font-medium opacity-80 ring-0 hover:ring-0 focus:ring-0 outline-none hover:outline-none focus:outline-none hover:border-0 focus:border-0 text-midGray"
         }`}
         value={selectedValue}
         onChange={(event) => {

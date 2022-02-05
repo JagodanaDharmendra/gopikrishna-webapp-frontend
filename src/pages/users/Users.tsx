@@ -189,25 +189,9 @@ function View() {
               <h1>No users found</h1>
             </div>
           ))}
-        {userSearchResult
-          ?.filter((value: ITypeUser) => {
-            if (!searchQuery || searchQuery.length === 0) {
-              return value;
-            }
-            if (
-              value.userName.includes(searchQuery) ||
-              value.department.includes(searchQuery)
-            ) {
-              return value;
-            } else {
-              return null;
-            }
-          })
-          .map((value: ITypeUser, index: number) => {
-            return (
-              <UserItem index={index} value={value} onClick={deleteUser} />
-            );
-          })}
+        {userSearchResult?.map((value: ITypeUser, index: number) => {
+          return <UserItem index={index} value={value} onClick={deleteUser} />;
+        })}
       </ul>
     </div>
   );

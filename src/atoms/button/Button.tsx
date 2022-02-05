@@ -33,7 +33,7 @@ const Button: React.FC<IProps> = (props: IProps & any) => {
   } = props;
 
   const classnames = classNames(
-    block && "w-full block py-2",
+    block && "w-full block",
     "py-1 px-2 focus:opacity-70 hover:opacity-70",
     outlined && "border-primary text-primary border-2",
     shadow && "shadow-largest rounded-xl",

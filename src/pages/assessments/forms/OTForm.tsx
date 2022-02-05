@@ -49,7 +49,6 @@ const OTForm = (props: IProps) => {
 
   return (
     <>
-      <div>OT Assessments</div>
       <Formik
         initialValues={props.initialValues}
         onSubmit={handleSubmit}
