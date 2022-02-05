@@ -63,7 +63,10 @@ const Assessments: React.FC<any> = () => {
             <Tab.Panels className="flex w-full mt-4">
               {tabs.map((value, index) => {
                 return (
-                  <Tab.Panel key={`${index}-${value.tabTitle}`}>
+                  <Tab.Panel
+                    key={`${index}-${value.tabTitle}`}
+                    className="flex w-full"
+                  >
                     {value.view()}
                   </Tab.Panel>
                 );

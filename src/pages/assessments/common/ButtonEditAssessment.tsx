@@ -14,7 +14,7 @@ const ButtonEditAssessment = (props: IType) => {
       to={`/dashboard/assessment/${props.client_id}/${props.assessmentType}/${props.version}`}
       className="flex items-center py-4 col-span-1"
     >
-      <Button secondary onClick={() => {}}>
+      <Button primary onClick={() => {}} className="w-40 max-w-xs h-10">
         <Label title={props.label} className="text-white" />
       </Button>
     </Link>

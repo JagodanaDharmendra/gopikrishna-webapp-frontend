@@ -55,7 +55,9 @@ const Assessment = (props: IProps) => {
   function PanelTitle({ title }: any) {
     return (
       <>
-        <div className="flex m-4 border-t-2">{title}</div>
+        <div className=" bg-gray rounded-t">
+          <div className="flex m-4">{title}</div>
+        </div>
       </>
     );
   }
@@ -63,6 +65,11 @@ const Assessment = (props: IProps) => {
   function PanelDescription({ dataList, Children }: any) {
     return (
       <>
+        {(!dataList || dataList.length == 0) && (
+          <div className="flex h-12 content-center justify-center items-center">
+            <div>No data found</div>
+          </div>
+        )}
         {dataList?.map((value: any, index: number) => {
           return (
             <div key={`${value.client_id}_${value.version}_${index}`}>
@@ -75,30 +82,30 @@ const Assessment = (props: IProps) => {
   }
 
   return (
-    <>
+    <div className="flex w-full flex-col">
       {error && <Label title={error} style={{ color: "#FF0000" }} />}
-      <div>
+      <>
         <PanelTitle title="Draft Assessments" />
         <PanelDescription
           dataList={draftAssessments}
           Children={ItemDraftAssessment}
         />
-      </div>
-      <div>
+      </>
+      <>
         <PanelTitle title="Pending Assessments" />
         <PanelDescription
           dataList={pendingAssessments}
           Children={ItemPendingAssessment}
         />
-      </div>
-      <div>
+      </>
+      <>
         <PanelTitle title="Completed Assessments" />
         <PanelDescription
           dataList={completedAssessments}
           Children={ItemCompletedAssessment}
         />
-      </div>
-    </>
+      </>
+    </div>
   );
 };
 
